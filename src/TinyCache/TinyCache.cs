@@ -8,8 +8,9 @@ namespace TinyCache
 
     public static class TinyCache
     {
+		private static TinyCachePolicy defaultPolicy = new TinyCachePolicy();
+
         public static ICacheStorage Storage { get; internal set; } = new MemoryDictionaryCache();
-        private static TinyCachePolicy defaultPolicy = new TinyCachePolicy();
 
         public static EventHandler<Exception> OnError;
         public static EventHandler<CacheUpdatedEvt> OnUpdate;
@@ -33,15 +34,18 @@ namespace TinyCache
 
                 OnLoadingChange?.Invoke(task, false);
                 throw new TimeoutException("The operation has timed out.");
-
             }
         }
 
         public static async Task<T> UsePolicy<T>(string key, Func<Task<T>> func, TinyCachePolicy policy = null)
         {
             object ret = Storage.Get(key, typeof(T));
+
             if (policy == null)
+            {
                 policy = defaultPolicy;
+			}
+            
             if (policy.Mode == TinyCacheModeEnum.FetchFirst)
             {
                 try
@@ -58,11 +62,19 @@ namespace TinyCache
                     OnError?.Invoke(policy, ex);
                 }
             }
+
             StartBackgroundFetch(key, func, policy);
+
             if (ret == null)
-                return default(T);
+            {
+				return default(T);
+            }
+
             if (typeof(T) == typeof(object))
-                return (T)ret;
+            {
+				return (T)ret;
+            }
+
             return (T)Convert.ChangeType(ret, typeof(T));
         }
 
@@ -114,15 +126,22 @@ namespace TinyCache
         private static void AddLastFetch(string key)
         {
             if (lastFetch.ContainsKey(key))
-                lastFetch[key] = DateTime.Now;
+            {
+				lastFetch[key] = DateTime.Now;
+            }
             else
+            {
                 lastFetch.Add(key, DateTime.Now);
+			}
         }
 
         private static bool ShouldFetch(int v, string key)
         {
             if (!lastFetch.ContainsKey(key))
-                return true;
+            {
+				return true;
+            }
+
             var timeDiff = (DateTime.Now - lastFetch[key]).TotalMilliseconds;
             return (timeDiff > (v * 10));
         }
@@ -132,8 +151,11 @@ namespace TinyCache
             if (val != null)
             {
                 AddLastFetch(key);
+
                 if (Storage.Store(key, val))
-                    OnUpdate?.Invoke(val, new CacheUpdatedEvt() { Key = key, Value = val });
+                {
+					OnUpdate?.Invoke(val, new CacheUpdatedEvt() { Key = key, Value = val });
+                }
             }
         }
 
@@ -205,7 +227,5 @@ namespace TinyCache
         //        return (T)ret;
         //    return (T)Convert.ChangeType(ret, typeof(T));
         //}
-
-
     }
 }

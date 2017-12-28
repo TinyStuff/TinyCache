@@ -25,8 +25,10 @@ namespace gymlocator.Rest.Models
             }
         }
 
-        public bool HasPT {
-            get {
+        public bool HasPT 
+        {
+            get 
+            {
                 return NoPT > 0;
             }
         }
