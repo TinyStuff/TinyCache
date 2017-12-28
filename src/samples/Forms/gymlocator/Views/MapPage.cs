@@ -37,14 +37,19 @@ namespace gymlocator.Views
             };
             Content = oc;
             var slider = new DrawerControl();
-            var sliderOverlay = new ViewOverlay(slider, OverlayType.Bottom);
+            var sliderOverlay = new ViewOverlay(slider, OverlayType.Bottom) {
+                MinSize = 65
+            };
             slider.OnGymSelected += (sender, e) =>
             {
                 map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(e.Location.Lat, e.Location.Lng), Distance.FromKilometers(1)));
+                oc.Minimize(sliderOverlay);
+                map.Focus();
             };
             slider.OnSearchFocus += (sender, e) => {
                 oc.MaximizeOverlay(sliderOverlay);
             };
+
             slider.BindingContext = viewModel;
             oc.AddOverlay(sliderOverlay);
         }

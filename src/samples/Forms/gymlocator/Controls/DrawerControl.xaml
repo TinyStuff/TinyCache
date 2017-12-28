@@ -5,26 +5,44 @@
     x:Class="gymlocator.Controls.DrawerControl">
     <ContentView.Content>
         <StackLayout
-            BackgroundColor="#33eeeeee"
-            Padding="10">
+            BackgroundColor="#22eeeeee"
+            Padding="10,5">
             <Entry
-                Placeholder="Search gyms" Focused="Handle_Focused" TextChanged="Handle_TextChanged" />
+                Placeholder="Search gyms"
+                Margin="5,10,5,5"
+                HeightRequest="35"
+                Focused="Handle_Focused"
+                BackgroundColor="#33cccccc"
+                TextChanged="Handle_TextChanged" />
             <ListView
                 BackgroundColor="Transparent"
                 x:Name="gymlist"
+                RowHeight="55"
                 ItemSelected="Handle_ItemSelected"
                 SeparatorColor="#cccccccc"
                 ItemsSource="{Binding Gyms}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid 
-                                BackgroundColor="Transparent"
-                                Padding="10,5">
-                                <Label Grid.Row="0" Grid.Column="0"
+                            <Grid
+                                Padding="10,5"
+                                RowSpacing="4"
+                                VerticalOptions="CenterAndExpand"
+                                ColumnSpacing="8"
+                                BackgroundColor="Transparent">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Label
+                                    Grid.Row="0"
+                                    Grid.Column="0"
                                     Text="{Binding Name}" />
-                                <Label Grid.Row="1" Grid.Column="0"
-                                    Text="{Binding Description}" />
+                                <Label
+                                    Grid.Row="1"
+                                    Style="{StaticResource EmailLabel}"
+                                    Grid.Column="0"
+                                    Text="{Binding Email}" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

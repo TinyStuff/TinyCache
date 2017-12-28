@@ -9,11 +9,11 @@
         <ScrollView>
             <StackLayout
                 Padding="10,20">
-                <Label
+                <!--<Label
                     Style="{StaticResource Strong}"
                     Text="{Binding Name}" />
                 <Label
-                    Text="{Binding Description}" />
+                    Text="{Binding Description}" />-->
                 <Label
                     Style="{StaticResource Section}"
                     Text="{Binding [Address]}" />
@@ -30,7 +30,7 @@
                     Style="{StaticResource Section}"
                     Text="{Binding [Features]}" />
                 <Controls:RepeaterView
-                    Padding="10,5"
+                    Padding="0,5"
                     ItemsSource="{Binding Features}">
                     <Controls:RepeaterView.ItemTemplate>
                         <DataTemplate>
@@ -48,7 +48,7 @@
                     Style="{StaticResource Section}"
                     Text="{Binding [Personal trainers]}" />
                 <Controls:RepeaterView
-                    Padding="10,5"
+                    Padding="0,5"
                     ItemsSource="{Binding PersonalTrainers}">
                     <Controls:RepeaterView.ItemTemplate>
                         <DataTemplate>

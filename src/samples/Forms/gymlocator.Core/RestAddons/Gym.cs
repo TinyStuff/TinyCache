@@ -7,9 +7,23 @@ using System.Threading.Tasks;
 namespace gymlocator.Rest.Models
 {
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public partial class Gym 
+    public partial class Gym
     {
-        
+        public string Email
+        {
+            get
+            {
+                return Contact.Email;
+            }
+        }
+
+        public string NoPT
+        {
+            get
+            {
+                return PersonalTrainers.Count().ToString();
+            }
+        }
     }
 
     public static class GymExtenstions
@@ -18,7 +32,7 @@ namespace gymlocator.Rest.Models
         {
             using (var _result = await operations.GetGymsWithHttpMessagesAsync(locale, null, cancellationToken).ConfigureAwait(false))
             {
-                return (_result.Body as IEnumerable<Gym>).OrderBy(d=>d.Name).ToList();
+                return (_result.Body as IEnumerable<Gym>).OrderBy(d => d.Name).ToList();
             }
         }
     }

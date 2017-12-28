@@ -23,7 +23,17 @@
                 TargetType="Label">
                 <Setter
                     Property="FontSize"
-                    Value="21" />
+                    Value="25" />
+                <Setter
+                    Property="Margin"
+                    Value="0,10,0,7" />
+            </Style>
+            <Style
+                x:Key="EmailLabel"
+                TargetType="Label">
+                <Setter
+                    Property="FontSize"
+                    Value="13" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>

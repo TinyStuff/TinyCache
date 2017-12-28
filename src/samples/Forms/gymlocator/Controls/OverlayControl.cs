@@ -90,9 +90,8 @@ namespace gymlocator.Controls
             {
                 var delta = overlay.lastOffset - overlay.offset;
                 var absDelta = Math.Abs(delta);
-                if (absDelta > 40)
+                if (absDelta > 15)
                 {
-
                     newSize = (delta > 0) ? TotalHeight : overlay.MinSize;
                 }
                 else if (absDelta > 4)
@@ -106,12 +105,27 @@ namespace gymlocator.Controls
             }
         }
 
+        private void SetOverlaySize(ViewOverlay ov, double ns) {
+            if (!ov.active)
+            {
+                ov.Bounds = GetRect(ov, ns);
+                ov.OverlayView.LayoutTo(ov.Bounds, 300, Easing.CubicInOut);
+            }
+        }
+
+        public void Rezise(ViewOverlay ov, float percent)
+        {
+            SetOverlaySize(ov,TotalHeight * (percent / 100f));
+        }
+
+        public void Minimize(ViewOverlay sliderOverlay)
+        {
+            SetOverlaySize(sliderOverlay, 0);
+        }
+
         public void MaximizeOverlay(ViewOverlay ov)
         {
-            if (!ov.active) {
-                ov.Bounds = new Rectangle(0, 0, TotalWidth, TotalHeight);
-                ov.OverlayView.LayoutTo(ov.Bounds,300,Easing.CubicInOut);
-            }
+            SetOverlaySize(ov,TotalHeight);
         }
 
         private Rectangle GetRect(ViewOverlay overlay, double newSize)
