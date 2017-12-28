@@ -15,11 +15,14 @@ namespace gymlocator.Views
 
         public MapPage()
         {
+            Title = "Locator";
             viewModel = new GymViewModel(this);
             NavigationPage.SetHasNavigationBar(this, false);
             SetupContents();
             SetupLocation();
         }
+
+        private Distance defaultDistance = Distance.FromKilometers(1);
 
         private void SetupContents()
         {
@@ -29,38 +32,48 @@ namespace gymlocator.Views
                 HasZoomEnabled = true,
                 IsShowingUser = true
             };
-            var oc = new OverlayControl
+            var overlayControl = new OverlayControl
             {
                 Children = {
                     map
                 }
             };
-            Content = oc;
-            var slider = new DrawerControl();
-            var sliderOverlay = new ViewOverlay(slider, OverlayType.Bottom) {
+            Content = overlayControl;
+
+            var slider = new DrawerControl()
+            {
+                BindingContext = viewModel
+            };
+
+            var sliderOverlay = new ViewOverlay(slider, OverlayType.Bottom)
+            {
                 MinSize = 65,
                 InitialSize = 65
             };
+
             slider.OnGymSelected += (sender, e) =>
             {
-                map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(e.Location.Lat, e.Location.Lng), Distance.FromKilometers(1)));
-                oc.Minimize(sliderOverlay);
+                var moveToPos = new Position(e.Location.Lat, e.Location.Lng);
+                map.MoveToRegion(MapSpan.FromCenterAndRadius(moveToPos, defaultDistance));
                 map.Focus();
-            };
-            slider.OnSearchFocus += (sender, e) => {
-                oc.MaximizeOverlay(sliderOverlay);
+                overlayControl.Minimize(sliderOverlay);
             };
 
-            slider.BindingContext = viewModel;
-            oc.AddOverlay(sliderOverlay);
+            slider.OnSearchFocus += (sender, e) =>
+            {
+                overlayControl.MaximizeOverlay(sliderOverlay);
+            };
+
+            overlayControl.AddOverlay(sliderOverlay);
         }
 
         private void SetupLocation()
         {
             var geo = CrossGeolocator.Current;
-            geo.PositionChanged += (sender, e) => {
+            geo.PositionChanged += (sender, e) =>
+            {
                 var pos = new Position(e.Position.Latitude, e.Position.Longitude);
-                map.MoveToMapRegion(MapSpan.FromCenterAndRadius(pos, Distance.FromKilometers(1)));
+                map.MoveToMapRegion(MapSpan.FromCenterAndRadius(pos, defaultDistance));
             };
             geo.StartListeningAsync(TimeSpan.FromMinutes(2), 150);
         }
