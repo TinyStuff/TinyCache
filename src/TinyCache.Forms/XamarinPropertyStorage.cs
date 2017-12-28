@@ -7,11 +7,19 @@ namespace TinyCache
 {
     public class XamarinPropertyStorage : IPreloadableCache
     {
+        private IDictionary<string, object> AppStorage
+        {
+            get
+            {
+                return Application.Current.Properties;
+            }
+        }
+
         public object Get(string key, Type t)
         {
-            if (Application.Current.Properties != null && Application.Current.Properties.ContainsKey(key))
+            if (AppStorage != null && AppStorage.ContainsKey(key))
             {
-                var stringValue = Application.Current.Properties[key] as string;
+                var stringValue = AppStorage[key] as string;
                 return JsonConvert.DeserializeObject(stringValue, t);
             }
 
@@ -29,26 +37,26 @@ namespace TinyCache
 
             var stringValue = JsonConvert.SerializeObject(value);
 
-            if (Application.Current.Properties != null && !string.IsNullOrEmpty(stringValue))
+            if (AppStorage != null && !string.IsNullOrEmpty(stringValue))
             {
-                if (Application.Current.Properties.ContainsKey(key))
+                if (AppStorage.ContainsKey(key))
                 {
-                    if (Application.Current.Properties[key] as string != stringValue)
+                    if (AppStorage[key] as string != stringValue)
                     {
-                        Application.Current.Properties[key] = stringValue;
+                        AppStorage[key] = stringValue;
                         ret = false;
                     }
                 }
                 else
                 {
-                    Application.Current.Properties.Add(key, stringValue);
+                    AppStorage.Add(key, stringValue);
                     ret = true;
                 }
             }
 
             if (ret)
             {
-				Application.Current.SavePropertiesAsync();
+                Application.Current.SavePropertiesAsync();
             }
 
             return ret;
@@ -56,15 +64,15 @@ namespace TinyCache
 
         public void Remove(string key)
         {
-            if (Application.Current.Properties != null && Application.Current.Properties.ContainsKey(key))
+            if (AppStorage != null && AppStorage.ContainsKey(key))
             {
-                Application.Current.Properties.Remove(key);
+                AppStorage.Remove(key);
             }
         }
 
         public string GetAllAsLoadableString()
         {
-            return JsonConvert.SerializeObject(Application.Current.Properties);
+            return JsonConvert.SerializeObject(AppStorage);
         }
 
         public void LoadFromString(string fillData)
@@ -73,9 +81,9 @@ namespace TinyCache
 
             foreach (var key in dict.Keys)
             {
-                if (!Application.Current.Properties.ContainsKey(key))
+                if (!AppStorage.ContainsKey(key))
                 {
-					Application.Current.Properties.Add(key,dict[key]);
+                    AppStorage.Add(key, dict[key]);
                 }
             }
         }
