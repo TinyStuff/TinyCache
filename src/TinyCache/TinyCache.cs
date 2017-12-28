@@ -8,7 +8,7 @@ namespace TinyCache
 
     public static class TinyCache
     {
-        public static ICacheStorage Storage { get; internal set; } = new MemmoryDictionaryCache();
+        public static ICacheStorage Storage { get; internal set; } = new MemoryDictionaryCache();
         private static TinyCachePolicy defaultPolicy = new TinyCachePolicy();
 
         public static EventHandler<Exception> OnError;
