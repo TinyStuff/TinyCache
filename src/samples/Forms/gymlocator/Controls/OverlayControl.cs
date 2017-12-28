@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace gymlocator.Controls
@@ -29,6 +30,7 @@ namespace gymlocator.Controls
         }
         public View OverlayView { get; set; }
         public OverlayType Type { get; set; }
+        public double MinSize { get; set; } = 55;
         public float SnapPercent { get; set; }
         public bool Active { get; set; }
         public Rectangle Bounds { get; set; }
@@ -77,29 +79,48 @@ namespace gymlocator.Controls
 
         private void UpdateLayout(ViewOverlay overlay)
         {
-            
-            var orgSize = overlay.Bounds.Height;
+            var orgSize = overlay.Bounds.Height - overlay.Bounds.Y;
             var newSize = (orgSize - overlay.offset);
-            var rect = new Rectangle(overlay.Bounds.X, TotalHeight - newSize, overlay.Bounds.Width, newSize);
+
             if (overlay.active)
             {
-                overlay.OverlayView.Layout(rect);
+                overlay.OverlayView.Layout(GetRect(overlay, newSize));
             }
-            else 
+            else
             {
                 var delta = overlay.lastOffset - overlay.offset;
-                if (Math.Abs(delta) > 4) {
-                    var totalMovement = delta * 3;
-                
+                var absDelta = Math.Abs(delta);
+                if (absDelta > 40)
+                {
 
-                    overlay.OverlayView.
-                       Task.Delay(300);
+                    newSize = (delta > 0) ? TotalHeight : overlay.MinSize;
                 }
-
+                else if (absDelta > 4)
+                {
+                    newSize += (delta * 4);
+                }
+                var rect = GetRect(overlay, newSize);
+                overlay.OverlayView.LayoutTo(rect, 300, Easing.CubicOut);
                 overlay.Bounds = rect;
                 overlay.offset = 0;
             }
+        }
 
+        public void MaximizeOverlay(ViewOverlay ov)
+        {
+            if (!ov.active) {
+                ov.Bounds = new Rectangle(0, 0, TotalWidth, TotalHeight);
+                ov.OverlayView.LayoutTo(ov.Bounds,300,Easing.CubicInOut);
+            }
+        }
+
+        private Rectangle GetRect(ViewOverlay overlay, double newSize)
+        {
+            if (newSize <= overlay.MinSize)
+                newSize = overlay.MinSize;
+            if (newSize >= TotalHeight)
+                newSize = TotalHeight;
+            return new Rectangle(overlay.Bounds.X, TotalHeight - newSize, overlay.Bounds.Width, TotalHeight);
         }
 
         private double TotalWidth;
@@ -117,7 +138,7 @@ namespace gymlocator.Controls
             }
             foreach (var overlay in Overlays)
             {
-                if (overlay.Bounds == null || overlay.Bounds.IsEmpty)
+                if (overlay.Bounds.IsEmpty)
                 {
                     overlay.Bounds = GetInitialBounds(overlay, fullRect);
                 }
@@ -128,7 +149,7 @@ namespace gymlocator.Controls
         private Rectangle GetInitialBounds(ViewOverlay overlay, Rectangle fullRect)
         {
             var size = (double)(fullRect.Height * (overlay.SnapPercent / 100f));
-            var ret = new Rectangle(fullRect.X, fullRect.Height - size, fullRect.Width, size);
+            var ret = new Rectangle(fullRect.X, fullRect.Height - size, fullRect.Width, fullRect.Height);
             return ret;
         }
     }

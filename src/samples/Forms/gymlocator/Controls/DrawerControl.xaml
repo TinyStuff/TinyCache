@@ -5,10 +5,28 @@
     x:Class="gymlocator.Controls.DrawerControl">
     <ContentView.Content>
         <StackLayout
-            BackgroundColor="Silver"
+            BackgroundColor="#33eeeeee"
             Padding="10">
             <Entry
-                Placeholder="Search gyms" />
+                Placeholder="Search gyms" Focused="Handle_Focused" TextChanged="Handle_TextChanged" />
+            <ListView
+                BackgroundColor="Transparent"
+                x:Name="gymlist"
+                ItemSelected="Handle_ItemSelected"
+                ItemsSource="{Binding Gyms}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid 
+                                BackgroundColor="Transparent"
+                                Padding="10,5">
+                                <Label
+                                    Text="{Binding Name}" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentView.Content>
 </ContentView>

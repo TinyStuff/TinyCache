@@ -8,7 +8,7 @@ namespace gymlocator
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new Views.GymLocatorMain());
+            MainPage = new NavigationPage(new Views.MapPage());
         }
 
         protected override void OnStart()
