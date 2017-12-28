@@ -38,6 +38,7 @@ namespace gymlocator.Views
             Content = oc;
             var slider = new DrawerControl();
             var sliderOverlay = new ViewOverlay(slider, OverlayType.Bottom) {
+                MinSize = 65,
                 InitialSize = 65
             };
             slider.OnGymSelected += (sender, e) =>

@@ -153,6 +153,9 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Renderers\LargeTabbedPageRenderer.cs" />
+    <Compile Include="Renderers\TabbedPageRenderer.cs" />
+    <Compile Include="Renderers\CustomEntryRenderer.cs" />
+    <Compile Include="Renderers\DrawerControlRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gymlocator.Core\gymlocator.Core.csproj">
