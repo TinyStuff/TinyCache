@@ -17,11 +17,17 @@ namespace gymlocator.Rest.Models
             }
         }
 
-        public string NoPT
+        public int NoPT
         {
             get
             {
-                return PersonalTrainers.Count().ToString();
+                return PersonalTrainers.Count();
+            }
+        }
+
+        public bool HasPT {
+            get {
+                return NoPT > 0;
             }
         }
     }

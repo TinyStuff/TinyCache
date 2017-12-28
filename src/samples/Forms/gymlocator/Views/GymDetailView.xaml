@@ -46,9 +46,11 @@
                 </Controls:RepeaterView>
                 <Label
                     Style="{StaticResource Section}"
+                    IsVisible="{Binding HasPT}"
                     Text="{Binding [Personal trainers]}" />
                 <Controls:RepeaterView
                     Padding="0,5"
+                    IsVisible="{Binding HasPT}"
                     ItemsSource="{Binding PersonalTrainers}">
                     <Controls:RepeaterView.ItemTemplate>
                         <DataTemplate>
