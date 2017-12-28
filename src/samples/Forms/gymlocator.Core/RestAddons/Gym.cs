@@ -32,7 +32,7 @@ namespace gymlocator.Rest.Models
         }
     }
 
-    public static class GymExtenstions
+    public static class GymExtensions
     {
         public static async Task<List<Gym>> GetGymListAsync(this IGymAPI operations, string locale, CancellationToken cancellationToken = default(CancellationToken))
         {
