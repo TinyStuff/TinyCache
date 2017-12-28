@@ -1,5 +1,5 @@
 ﻿using System;
-
+using gymlocator.Controls;
 using Xamarin.Forms;
 
 namespace gymlocator.Views
