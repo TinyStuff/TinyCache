@@ -14,17 +14,21 @@ namespace TinyCache
                 var stringValue = Application.Current.Properties[key] as string;
                 return JsonConvert.DeserializeObject(stringValue, t);
             }
+
             return null;
         }
 
         public bool Store(string key, object value)
         {
             var ret = true;
+
             if (value == null)
             {
                 ret = false;
             }
+
             var stringValue = JsonConvert.SerializeObject(value);
+
             if (Application.Current.Properties != null && !string.IsNullOrEmpty(stringValue))
             {
                 if (Application.Current.Properties.ContainsKey(key))
@@ -41,8 +45,12 @@ namespace TinyCache
                     ret = true;
                 }
             }
+
             if (ret)
-                Application.Current.SavePropertiesAsync();
+            {
+				Application.Current.SavePropertiesAsync();
+            }
+
             return ret;
         }
 
@@ -62,10 +70,13 @@ namespace TinyCache
         public void LoadFromString(string fillData)
         {
             var dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(fillData);
+
             foreach (var key in dict.Keys)
             {
                 if (!Application.Current.Properties.ContainsKey(key))
-                    Application.Current.Properties.Add(key,dict[key]);
+                {
+					Application.Current.Properties.Add(key,dict[key]);
+                }
             }
         }
     }
