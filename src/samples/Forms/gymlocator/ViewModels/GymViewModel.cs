@@ -15,27 +15,19 @@ namespace gymlocator.ViewModels
 
     public class GymViewModel : ViewModelBase
     {
-        private DataStore dataModel;
-        private string currentFilter;
-
-        public void FilterGyms(string newTextValue)
-        {
-            currentFilter = newTextValue.ToLower();
-            FilterResults();
-        }
-
-        private TKCustomMap map;
-
         public GymViewModel(ContentPage page) : base(page)
         {
             dataModel = new DataStore();
         }
 
-        public override void OnFirstAppear()
-        {
-            base.OnFirstAppear();
-            Init();
-        }
+        private DataStore dataModel;
+        private string currentFilter;
+        private IList<Gym> allGyms = new List<Gym>();
+        private bool hasRunInit = false;
+        private TKCustomMap map;
+
+        public ObservableCollection<Gym> Gyms { get; set; } = new ObservableCollection<Gym>();
+        public ObservableCollection<TKCustomMapPin> Pins { get; set; } = new ObservableCollection<TKCustomMapPin>();
 
         public ICommand OpenGym => new Command((arg) =>
         {
@@ -57,31 +49,10 @@ namespace gymlocator.ViewModels
             PopulateGyms(gyms);
         });
 
-        private IList<Gym> allGyms = new List<Gym>();
-
-        public ObservableCollection<Gym> Gyms { get; set; } = new ObservableCollection<Gym>();
-        public ObservableCollection<TKCustomMapPin> Pins { get; set; } = new ObservableCollection<TKCustomMapPin>();
-
-        private bool hasRunInit = false;
-        public async void Init(TKCustomMap map = null)
+        public void FilterGyms(string newTextValue)
         {
-            if (map != null)
-                this.map = map;
-            if (!hasRunInit)
-            {
-                hasRunInit = true;
-                var gyms = await dataModel.GetGymsAsync();
-
-                if (map != null)
-                {
-                    map.CustomPins = Pins;
-                    map.CalloutClicked += (sender, e) => OpenGym.Execute(e.Value);
-                }
-                if (gyms != null && gyms.Any())
-                {
-                    PopulateGyms(gyms);
-                }
-            }
+            currentFilter = newTextValue.ToLower();
+            FilterResults();
         }
 
         private void PopulateGyms(IList<Gym> gyms)
@@ -155,6 +126,33 @@ namespace gymlocator.ViewModels
             if (string.IsNullOrWhiteSpace(currentFilter))
                 return true;
             return (gym.Name.ToLower().Contains(currentFilter));
+        }
+
+        public override void OnFirstAppear()
+        {
+            base.OnFirstAppear();
+            Init();
+        }
+
+        public async void Init(TKCustomMap map = null)
+        {
+            if (map != null)
+                this.map = map;
+            if (!hasRunInit)
+            {
+                hasRunInit = true;
+                var gyms = await dataModel.GetGymsAsync();
+
+                if (map != null)
+                {
+                    map.CustomPins = Pins;
+                    map.CalloutClicked += (sender, e) => OpenGym.Execute(e.Value);
+                }
+                if (gyms != null && gyms.Any())
+                {
+                    PopulateGyms(gyms);
+                }
+            }
         }
     }
 }

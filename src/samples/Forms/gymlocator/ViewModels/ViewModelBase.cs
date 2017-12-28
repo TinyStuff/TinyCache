@@ -13,6 +13,7 @@ namespace gymlocator.ViewModels
         }
 
         private Dictionary<string, string> translations = new Dictionary<string, string>();
+        private bool hasAppeared;
 
         public string this[string translationKey]
         {
@@ -27,8 +28,6 @@ namespace gymlocator.ViewModels
                 return translationKey;
             }
         }
-
-        private bool hasAppeared;
 
         public INavigation Navigation { get; internal set; }
 

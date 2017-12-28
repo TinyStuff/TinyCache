@@ -58,13 +58,11 @@ namespace gymlocator.Views
         private void SetupLocation()
         {
             var geo = CrossGeolocator.Current;
-            geo.PositionChanged += PositionChanged;
-            geo.StartListeningAsync(TimeSpan.FromMinutes(2), 15);
-        }
-
-        void PositionChanged(object sender, Plugin.Geolocator.Abstractions.PositionEventArgs e)
-        {
-            map.MoveToMapRegion(MapSpan.FromCenterAndRadius(new Position(e.Position.Latitude, e.Position.Longitude), Distance.FromKilometers(1)));
+            geo.PositionChanged += (sender, e) => {
+                var pos = new Position(e.Position.Latitude, e.Position.Longitude);
+                map.MoveToMapRegion(MapSpan.FromCenterAndRadius(pos, Distance.FromKilometers(1)));
+            };
+            geo.StartListeningAsync(TimeSpan.FromMinutes(2), 150);
         }
 
         protected override void OnAppearing()

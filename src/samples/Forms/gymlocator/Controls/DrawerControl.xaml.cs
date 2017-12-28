@@ -8,6 +8,14 @@ namespace gymlocator.Controls
 {
     public partial class DrawerControl : ContentView
     {
+        public DrawerControl()
+        {
+            InitializeComponent();
+        }
+
+        public EventHandler<Gym> OnGymSelected;
+        public EventHandler<FocusEventArgs> OnSearchFocus;
+
         void Handle_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
         {
             var vm = BindingContext as GymViewModel;
@@ -18,7 +26,6 @@ namespace gymlocator.Controls
         {
             if (e.SelectedItem != null)
             {
-                
                 OnGymSelected?.Invoke(this, e.SelectedItem as Gym);
                 gymlist.SelectedItem = null;
             }
@@ -27,14 +34,6 @@ namespace gymlocator.Controls
         void Handle_Focused(object sender, Xamarin.Forms.FocusEventArgs e)
         {
             OnSearchFocus?.Invoke(sender, e);
-        }
-
-        public EventHandler<Gym> OnGymSelected;
-        public EventHandler<FocusEventArgs> OnSearchFocus;
-
-        public DrawerControl()
-        {
-            InitializeComponent();
         }
     }
 }

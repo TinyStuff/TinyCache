@@ -8,6 +8,14 @@ namespace gymlocator.ViewModels
 {
     public class GymDetailViewModel : ViewModelBase
     {
+        public GymDetailViewModel(ContentPage page, Gym selectedGym) : base(page)
+        {
+            if (selectedGym != null)
+            {
+                currentGym = selectedGym;
+            }
+        }
+
         private Gym currentGym;
 
         public string Name { get; set; }
@@ -26,14 +34,6 @@ namespace gymlocator.ViewModels
         {
             Device.OpenUri(new Uri(currentGym.FacebookPage));
         });
-
-        public GymDetailViewModel(ContentPage page, Gym selectedGym) : base(page)
-        {
-            if (selectedGym != null)
-            {
-                currentGym = selectedGym;
-            }
-        }
 
         public override void OnFirstAppear()
         {
