@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TinyCache
 {
-    public class MemmoryDictionaryCache : ICacheStorage
+    public class MemoryDictionaryCache : ICacheStorage
     {
         private Dictionary<string, object> cacheObj = new Dictionary<string, object>();
 
