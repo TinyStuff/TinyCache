@@ -19,7 +19,7 @@ namespace gymlocator.Views
             {
                 Title = "List",
             });
-            AddView(new GymMapView()
+            AddView(new MapPage()
             {
                 Title = "Map",
             });

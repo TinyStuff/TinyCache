@@ -1,5 +1,6 @@
 ﻿using System;
-
+using gymlocator.Controls;
+using TK.CustomMap;
 using Xamarin.Forms;
 
 namespace gymlocator.Views
@@ -8,12 +9,16 @@ namespace gymlocator.Views
     {
         public MapPage()
         {
-            Content = new OverlayControl
+            var map = new TKCustomMap();
+            var oc = new OverlayControl
             {
                 Children = {
-                    new Label { Text = "Hello ContentPage" }
+                    map
                 }
             };
+            Content = oc;
+            var slider = new DrawerControl();
+            oc.AddOverlay(new ViewOverlay(slider, OverlayType.Bottom));
         }
     }
 }
