@@ -45,6 +45,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DrawerControl.xaml.cs">
       <DependentUpon>DrawerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\RepeaterView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)ViewModels\" />

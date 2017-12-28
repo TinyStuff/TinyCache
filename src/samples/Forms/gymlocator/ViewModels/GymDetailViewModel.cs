@@ -50,6 +50,8 @@ namespace gymlocator.ViewModels
                     City = currentGym.Address.City;
                     PersonalTrainers = currentGym.PersonalTrainers;
                     Features = currentGym.Features;
+                    Email = currentGym.Contact.Email;
+                    Phone = currentGym.Contact.Phone;
                 });
             }
         }

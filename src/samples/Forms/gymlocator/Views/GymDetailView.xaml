@@ -3,15 +3,20 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="gymlocator.Views.GymDetailView"
+    xmlns:Controls="clr-namespace:gymlocator.Controls"
     Title="{Binding Title}">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout
                 Padding="10,20">
                 <Label
+                    Style="{StaticResource Strong}"
                     Text="{Binding Name}" />
                 <Label
                     Text="{Binding Description}" />
+                <Label
+                    Style="{StaticResource Section}"
+                    Text="{Binding [Address]}" />
                 <Label
                     Text="{Binding Address}" />
                 <StackLayout
@@ -21,38 +26,42 @@
                     <Label
                         Text="{Binding City}" />
                 </StackLayout>
-                <ListView
-                    ItemsSource="{Binding Features}"
-                    HasUnevenRows="true">
-                    <ListView.ItemTemplate>
+                <Label
+                    Style="{StaticResource Section}"
+                    Text="{Binding [Features]}" />
+                <Controls:RepeaterView
+                    Padding="10,5"
+                    ItemsSource="{Binding Features}">
+                    <Controls:RepeaterView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <StackLayout>
-                                    <Label
-                                        Text="{Binding Name}" />
-                                    <Label
-                                        Text="{Binding Description}" />
-                                </StackLayout>
-                            </ViewCell>
+                            <StackLayout>
+                                <Label
+                                    Style="{StaticResource Strong}"
+                                    Text="{Binding Name}" />
+                                <Label
+                                    Text="{Binding Description}" />
+                            </StackLayout>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <ListView
-                    ItemsSource="{Binding PersonalTrainers}"
-                    HasUnevenRows="true">
-                    <ListView.ItemTemplate>
+                    </Controls:RepeaterView.ItemTemplate>
+                </Controls:RepeaterView>
+                <Label
+                    Style="{StaticResource Section}"
+                    Text="{Binding [Personal trainers]}" />
+                <Controls:RepeaterView
+                    Padding="10,5"
+                    ItemsSource="{Binding PersonalTrainers}">
+                    <Controls:RepeaterView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <StackLayout>
-                                    <Label
-                                        Text="{Binding Name}" />
-                                    <Label
-                                        Text="{Binding Email}" />
-                                </StackLayout>
-                            </ViewCell>
+                            <StackLayout>
+                                <Label
+                                    Style="{StaticResource Strong}"
+                                    Text="{Binding Name}" />
+                                <Label
+                                    Text="{Binding Email}" />
+                            </StackLayout>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </Controls:RepeaterView.ItemTemplate>
+                </Controls:RepeaterView>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System.Collections.Generic;
+using Xamarin.Forms;
 
 namespace gymlocator.ViewModels
 {
@@ -9,6 +10,22 @@ namespace gymlocator.ViewModels
         {
             page.BindingContext = this;
             Navigation = page.Navigation;
+        }
+
+        private Dictionary<string, string> translations = new Dictionary<string, string>();
+
+        public string this[string translationKey]
+        {
+            get
+            {
+                if (translations.ContainsKey(translationKey))
+                    return translations[translationKey];
+                else
+                {
+                    translations.Add(translationKey,translationKey);
+                }
+                return translationKey;
+            }
         }
 
         private bool hasAppeared;

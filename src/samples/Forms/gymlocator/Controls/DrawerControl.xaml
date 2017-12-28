@@ -13,6 +13,7 @@
                 BackgroundColor="Transparent"
                 x:Name="gymlist"
                 ItemSelected="Handle_ItemSelected"
+                SeparatorColor="#cccccccc"
                 ItemsSource="{Binding Gyms}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -20,8 +21,10 @@
                             <Grid 
                                 BackgroundColor="Transparent"
                                 Padding="10,5">
-                                <Label
+                                <Label Grid.Row="0" Grid.Column="0"
                                     Text="{Binding Name}" />
+                                <Label Grid.Row="1" Grid.Column="0"
+                                    Text="{Binding Description}" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
