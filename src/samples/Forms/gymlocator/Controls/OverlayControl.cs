@@ -21,23 +21,28 @@ namespace gymlocator.Controls
         public ViewOverlay(View view, OverlayType type)
         {
             OverlayView = view;
-            SnapPercent = 20;
-            //if (type != OverlayType.Dialog)
-            //{
-            //    view.Opacity = 0;
-            //}
-
+            Type = type;
         }
+
         public View OverlayView { get; set; }
         public OverlayType Type { get; set; }
         public double MinSize { get; set; } = 55;
-        public float SnapPercent { get; set; }
+        public double MaxSize { get; set; } = 99999;
+        public double InitialSize { get; set; }
+        //public float SnapPercent { get; set; } = 20;
         public bool Active { get; set; }
         public Rectangle Bounds { get; set; }
 
         internal double offset { get; set; }
         internal bool active { get; set; }
         internal double lastOffset { get; set; }
+        public bool IsHorizontal
+        {
+            get
+            {
+                return Type == OverlayType.Left || Type == OverlayType.Right;
+            }
+        }
 
     }
 
@@ -65,7 +70,7 @@ namespace gymlocator.Controls
                         break;
                     case GestureStatus.Running:
                         overlay.lastOffset = overlay.offset;
-                        overlay.offset = e.TotalY;
+                        overlay.offset = overlay.IsHorizontal ? e.TotalX : e.TotalY;
                         break;
                     case GestureStatus.Completed:
                         overlay.active = false;
@@ -80,6 +85,23 @@ namespace gymlocator.Controls
         private void UpdateLayout(ViewOverlay overlay)
         {
             var orgSize = overlay.Bounds.Height - overlay.Bounds.Y;
+            var maxValue = TotalHeight;
+            switch (overlay.Type)
+            {
+                case OverlayType.Top:
+                    orgSize = -overlay.Bounds.Y;
+                    break;
+                case OverlayType.Left:
+                    orgSize = -overlay.Bounds.X;
+                    maxValue = TotalWidth;
+                    break;
+                case OverlayType.Right:
+                    orgSize = overlay.Bounds.Width - overlay.Bounds.X;
+                    maxValue = TotalWidth;
+                    break;
+            }
+
+            maxValue = Math.Min(maxValue, overlay.MaxSize);
             var newSize = (orgSize - overlay.offset);
 
             if (overlay.active)
@@ -90,9 +112,9 @@ namespace gymlocator.Controls
             {
                 var delta = overlay.lastOffset - overlay.offset;
                 var absDelta = Math.Abs(delta);
-                if (absDelta > 15)
+                if (absDelta > 20)
                 {
-                    newSize = (delta > 0) ? TotalHeight : overlay.MinSize;
+                    newSize = (delta > 0) ? maxValue : overlay.MinSize;
                 }
                 else if (absDelta > 4)
                 {
@@ -105,7 +127,8 @@ namespace gymlocator.Controls
             }
         }
 
-        private void SetOverlaySize(ViewOverlay ov, double ns) {
+        private void SetOverlaySize(ViewOverlay ov, double ns)
+        {
             if (!ov.active)
             {
                 ov.Bounds = GetRect(ov, ns);
@@ -115,7 +138,7 @@ namespace gymlocator.Controls
 
         public void Rezise(ViewOverlay ov, float percent)
         {
-            SetOverlaySize(ov,TotalHeight * (percent / 100f));
+            SetOverlaySize(ov, TotalHeight * (percent / 100f));
         }
 
         public void Minimize(ViewOverlay sliderOverlay)
@@ -125,16 +148,42 @@ namespace gymlocator.Controls
 
         public void MaximizeOverlay(ViewOverlay ov)
         {
-            SetOverlaySize(ov,TotalHeight);
+            SetOverlaySize(ov, TotalHeight);
         }
 
         private Rectangle GetRect(ViewOverlay overlay, double newSize)
         {
+            var x = overlay.Bounds.X;
+            var y = overlay.Bounds.Y;
+            var w = overlay.Bounds.Width;
+            var h = overlay.Bounds.Height;
+
+            var maxValue = TotalHeight;
+            if (overlay.IsHorizontal)
+                maxValue = TotalWidth;
+            maxValue = Math.Min(maxValue, overlay.MaxSize);
+
             if (newSize <= overlay.MinSize)
                 newSize = overlay.MinSize;
-            if (newSize >= TotalHeight)
-                newSize = TotalHeight;
-            return new Rectangle(overlay.Bounds.X, TotalHeight - newSize, overlay.Bounds.Width, TotalHeight);
+            if (newSize >= maxValue)
+                newSize = maxValue;
+            switch (overlay.Type)
+            {
+                case OverlayType.Bottom:
+                    y = maxValue - newSize;
+                    break;
+                case OverlayType.Top:
+                    y = -newSize;
+                    break;
+                case OverlayType.Left:
+                    x = -newSize;
+                    break;
+                case OverlayType.Right:
+                    x = maxValue - newSize;
+                    break;
+            }
+
+            return new Rectangle(x, y, w, h);
         }
 
         private double TotalWidth;
@@ -162,9 +211,9 @@ namespace gymlocator.Controls
 
         private Rectangle GetInitialBounds(ViewOverlay overlay, Rectangle fullRect)
         {
-            var size = (double)(fullRect.Height * (overlay.SnapPercent / 100f));
-            var ret = new Rectangle(fullRect.X, fullRect.Height - size, fullRect.Width, fullRect.Height);
-            return ret;
+            var initValue = Math.Max(overlay.MinSize, overlay.InitialSize);
+            overlay.Bounds = fullRect;
+            return GetRect(overlay, initValue);
         }
     }
 }

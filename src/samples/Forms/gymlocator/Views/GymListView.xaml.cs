@@ -7,7 +7,6 @@ namespace gymlocator.Views
 {
     public partial class GymListView : ContentPage
     {
-        private bool hasLoaded;
         private GymViewModel viewModel { get; set; }
 
         public GymListView()
@@ -25,13 +24,7 @@ namespace gymlocator.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            if (!hasLoaded)
-            {
-                hasLoaded = true;
-
-                viewModel.Init();
-            }
-
+            viewModel.OnAppear();
         }
     }
 }

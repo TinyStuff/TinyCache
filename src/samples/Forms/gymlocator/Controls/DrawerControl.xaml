@@ -2,12 +2,13 @@
 <ContentView
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Controls="clr-namespace:gymlocator.Controls"
     x:Class="gymlocator.Controls.DrawerControl">
     <ContentView.Content>
         <StackLayout
             BackgroundColor="#22eeeeee"
             Padding="10,5">
-            <Entry
+            <Controls:SearchBox
                 Placeholder="Search gyms"
                 Margin="5,10,5,5"
                 HeightRequest="35"

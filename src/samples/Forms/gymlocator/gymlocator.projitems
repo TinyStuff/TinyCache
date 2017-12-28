@@ -28,7 +28,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\GymViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\GymListModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\GymListView.xaml.cs">
       <DependentUpon>GymListView.xaml</DependentUpon>
     </Compile>

@@ -8,7 +8,7 @@ using Xamarin.Forms.Platform.iOS;
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(TabbedPageRenderer))]
 [assembly: ExportRenderer(typeof(Page), typeof(LargeTabbedPageRenderer))]
 [assembly: ExportRenderer(typeof(DrawerControl), typeof(DrawerControlRenderer))]
-[assembly: ExportRenderer(typeof(Entry), typeof(CustomEntryRenderer))]
+[assembly: ExportRenderer(typeof(SearchBox), typeof(CustomEntryRenderer))]
 
 namespace gymlocator.iOS.Renderers
 {
@@ -31,9 +31,7 @@ namespace gymlocator.iOS.Renderers
             {
                 NavigationController.NavigationBar.PrefersLargeTitles = !NavigationController.NavigationBar.Hidden;
             }
-
         }
-
     }
 
     public class CustomEntryRenderer : EntryRenderer 
@@ -41,7 +39,10 @@ namespace gymlocator.iOS.Renderers
         protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
         {
             base.OnElementChanged(e);
+            Control.ReturnKeyType = UIReturnKeyType.Search;
+            Control.ClearButtonMode = UITextFieldViewMode.Always;
             Control.BorderStyle = UITextBorderStyle.RoundedRect;
+            Layer.BorderColor = UIColor.Clear.CGColor;
         }
     }
 

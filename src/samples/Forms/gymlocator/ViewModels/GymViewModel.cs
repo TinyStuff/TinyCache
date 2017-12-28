@@ -29,7 +29,12 @@ namespace gymlocator.ViewModels
         public GymViewModel(ContentPage page) : base(page)
         {
             dataModel = new DataStore();
+        }
 
+        public override void OnFirstAppear()
+        {
+            base.OnFirstAppear();
+            Init();
         }
 
         public ICommand OpenGym => new Command((arg) =>
