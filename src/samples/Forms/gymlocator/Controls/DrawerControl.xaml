@@ -4,7 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="gymlocator.Controls.DrawerControl">
     <ContentView.Content>
-        <StackLayout BackgroundColor="Silver">
+        <StackLayout
+            BackgroundColor="Silver"
+            Padding="10">
             <Entry
                 Placeholder="Search gyms" />
         </StackLayout>

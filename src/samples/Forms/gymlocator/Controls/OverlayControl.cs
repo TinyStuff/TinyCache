@@ -62,6 +62,7 @@ namespace gymlocator.Controls
                         overlay.active = true;
                         break;
                     case GestureStatus.Running:
+                        overlay.lastOffset = overlay.offset;
                         overlay.offset = e.TotalY;
                         break;
                     case GestureStatus.Completed:
@@ -83,10 +84,18 @@ namespace gymlocator.Controls
             if (overlay.active)
             {
                 overlay.OverlayView.Layout(rect);
-                overlay.lastOffset = overlay.offset;
             }
             else 
             {
+                var delta = overlay.lastOffset - overlay.offset;
+                if (Math.Abs(delta) > 4) {
+                    var totalMovement = delta * 3;
+                
+
+                    overlay.OverlayView.
+                       Task.Delay(300);
+                }
+
                 overlay.Bounds = rect;
                 overlay.offset = 0;
             }
