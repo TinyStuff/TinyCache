@@ -23,6 +23,7 @@ namespace gymlocator.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
             global::Xamarin.FormsMaps.Init(this, bundle);
+
             //TKGoogleMaps.Init(this, bundle); 
             LoadApplication(new App());
         }

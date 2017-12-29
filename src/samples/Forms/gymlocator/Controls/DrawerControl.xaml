@@ -17,6 +17,7 @@
                 Color="#cccccc" />
             <Controls:SearchBox
                 Placeholder="Search gyms"
+                x:Name="searchField"
                 Margin="15,0,15,0"
                 HeightRequest="35"
                 Focused="Handle_Focused"

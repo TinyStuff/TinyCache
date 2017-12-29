@@ -165,6 +165,12 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\packages\Xamarin.Forms.2.5.0.122203\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="TinyPubSub">
+      <HintPath>..\..\..\packages\tinypubsub.1.2.72\lib\netstandard1.0\TinyPubSub.dll</HintPath>
+    </Reference>
+    <Reference Include="TinyPubSub.Forms">
+      <HintPath>..\..\..\packages\tinypubsub.forms.1.2.72\lib\netstandard1.0\TinyPubSub.Forms.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />

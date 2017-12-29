@@ -2,6 +2,7 @@
 using gymlocator.Controls;
 using gymlocator.ViewModels;
 using Plugin.Geolocator;
+using TinyPubSubLib;
 using TK.CustomMap;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
@@ -23,6 +24,7 @@ namespace gymlocator.Views
         }
 
         private Distance defaultDistance = Distance.FromKilometers(1);
+        private bool keyboardOpen;
 
         private void SetupContents()
         {
@@ -52,21 +54,39 @@ namespace gymlocator.Views
                 UseShadow = true,
                 InitialSize = 65
             };
+            keyboardOpen = false;
+            sliderOverlay.OnSizeChange += (sender, e) =>
+            {
+                if (e.Old > e.New)
+                {
+                    HideKeyboard();
+                }
+            };
 
             slider.OnGymSelected += (sender, e) =>
             {
                 var moveToPos = new Position(e.Location.Lat, e.Location.Lng);
                 map.MoveToRegion(MapSpan.FromCenterAndRadius(moveToPos, defaultDistance));
-                map.Focus();
+                HideKeyboard();
                 overlayControl.Minimize(sliderOverlay);
             };
 
             slider.OnSearchFocus += (sender, e) =>
             {
+                keyboardOpen = true;
                 overlayControl.MaximizeOverlay(sliderOverlay);
             };
 
             overlayControl.AddOverlay(sliderOverlay);
+        }
+
+        private void HideKeyboard()
+        {
+            if (keyboardOpen)
+            {
+                keyboardOpen = false;
+                TinyPubSub.Publish("HideKeyboard");
+            }
         }
 
         private void SetupLocation()

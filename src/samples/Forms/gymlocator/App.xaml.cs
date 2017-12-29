@@ -9,6 +9,7 @@ namespace gymlocator
             InitializeComponent();
 
             MainPage = new NavigationPage(new Views.MapPage());
+            TinyPubSubLib.TinyPubSubForms.Init(this);
         }
 
         protected override void OnStart()

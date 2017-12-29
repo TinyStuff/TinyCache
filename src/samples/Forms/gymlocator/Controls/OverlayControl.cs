@@ -16,6 +16,12 @@ namespace gymlocator.Controls
         Dialog
     }
 
+    public class ViewSizeArgs
+    {
+        public double Old { get; set; }
+        public double New { get; set; }
+    }
+
     public class ViewOverlay
     {
         public ViewOverlay(View view, OverlayType type)
@@ -23,7 +29,7 @@ namespace gymlocator.Controls
             OverlayView = view;
             Type = type;
         }
-
+        public EventHandler<ViewSizeArgs> OnSizeChange;
         public View OverlayView { get; set; }
         public BoxView ShadowView { get; set; }
         public OverlayType Type { get; set; }
@@ -118,6 +124,7 @@ namespace gymlocator.Controls
             }
             var maxAllowed = Math.Min(maxValue, overlay.MaxSize);
             var newSize = (orgSize - overlay.offset);
+
             var backgroundOpacity = GetBackgroundOpacity(maxAllowed, newSize);
             if (overlay.active)
             {
@@ -129,7 +136,7 @@ namespace gymlocator.Controls
                         dc.BackgroundOpacity = backgroundOpacity;
                     }
                 }
-                overlay.OverlayView.Layout(GetRect(overlay, newSize));
+                overlay.OverlayView.Layout(GetRect(overlay, newSize, orgSize));
             }
             else
             {
@@ -143,7 +150,7 @@ namespace gymlocator.Controls
                 {
                     newSize += (delta * 4);
                 }
-                var rect = GetRect(overlay, newSize);
+                var rect = GetRect(overlay, newSize, orgSize);
                 backgroundOpacity = GetBackgroundOpacity(maxAllowed, newSize);
                 overlay.OverlayView.LayoutTo(rect, 300, overlay.Easing);
                 if (overlay.UseShadow)
@@ -189,7 +196,7 @@ namespace gymlocator.Controls
             SetOverlaySize(ov, 99999);
         }
 
-        private Rectangle GetRect(ViewOverlay overlay, double newSize)
+        private Rectangle GetRect(ViewOverlay overlay, double newSize, double oldSize = -1)
         {
             var x = overlay.Bounds.X;
             var y = overlay.Bounds.Y;
@@ -206,6 +213,18 @@ namespace gymlocator.Controls
                 newSize = overlay.MinSize;
             if (newSize >= maxAllowed)
                 newSize = maxAllowed;
+
+            if (oldSize > -1)
+            {
+                if (overlay.OnSizeChange != null)
+                {
+                    overlay.OnSizeChange.Invoke(this, new ViewSizeArgs()
+                    {
+                        Old = oldSize,
+                        New = newSize
+                    });
+                }
+            }
             switch (overlay.Type)
             {
                 case OverlayType.Bottom:
@@ -254,5 +273,6 @@ namespace gymlocator.Controls
             overlay.Bounds = fullRect;
             return GetRect(overlay, initValue);
         }
+
     }
 }

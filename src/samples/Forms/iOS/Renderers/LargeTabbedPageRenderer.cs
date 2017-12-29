@@ -11,6 +11,12 @@ namespace gymlocator.iOS.Renderers
 {
     public class LargeTabbedPageRenderer : PageRenderer
     {
+        public LargeTabbedPageRenderer() {
+            TinyPubSubLib.TinyPubSub.Subscribe(this, "HideKeyboard",()=> {
+                View.EndEditing(true);
+            });
+        }
+
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
