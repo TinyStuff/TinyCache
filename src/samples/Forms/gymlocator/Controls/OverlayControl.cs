@@ -69,6 +69,7 @@ namespace gymlocator.Controls
                     overlay.ShadowView = new BoxView()
                     {
                         Opacity = 0,
+                        IsEnabled = false,
                         BackgroundColor = Color.Black
                     };
                 }
@@ -117,12 +118,16 @@ namespace gymlocator.Controls
             }
             var maxAllowed = Math.Min(maxValue, overlay.MaxSize);
             var newSize = (orgSize - overlay.offset);
-            var backgroundOpacity = Math.Max(0, (newSize / maxAllowed) - 0.2f);
+            var backgroundOpacity = GetBackgroundOpacity(maxAllowed, newSize);
             if (overlay.active)
             {
                 if (overlay.UseShadow)
                 {
                     overlay.ShadowView.Opacity = backgroundOpacity;
+                    if (overlay.OverlayView is DrawerControl dc)
+                    {
+                        dc.BackgroundOpacity = backgroundOpacity;
+                    }
                 }
                 overlay.OverlayView.Layout(GetRect(overlay, newSize));
             }
@@ -139,14 +144,24 @@ namespace gymlocator.Controls
                     newSize += (delta * 4);
                 }
                 var rect = GetRect(overlay, newSize);
+                backgroundOpacity = GetBackgroundOpacity(maxAllowed, newSize);
                 overlay.OverlayView.LayoutTo(rect, 300, overlay.Easing);
                 if (overlay.UseShadow)
                 {
                     overlay.ShadowView.FadeTo(backgroundOpacity, 300, Easing.Linear);
+                    if (overlay.OverlayView is DrawerControl dc)
+                    {
+                        dc.BackgroundOpacity = backgroundOpacity;
+                    }
                 }
                 overlay.Bounds = rect;
                 overlay.offset = 0;
             }
+        }
+
+        private static double GetBackgroundOpacity(double maxAllowed, double newSize)
+        {
+            return Math.Min(0.8, Math.Max(0, (newSize / maxAllowed)));
         }
 
         private void SetOverlaySize(ViewOverlay ov, double ns)

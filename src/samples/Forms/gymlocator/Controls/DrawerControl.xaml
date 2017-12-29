@@ -8,7 +8,8 @@
         <StackLayout
             BackgroundColor="#22ffffff"
             Padding="0,5">
-            <BoxView
+            <Controls:RoundedBoxView
+                CornerRadius="3"
                 HeightRequest="6"
                 Margin="0,3,0,0"
                 WidthRequest="40"
@@ -31,7 +32,7 @@
                 x:Name="gymlist"
                 RowHeight="55"
                 ItemSelected="Handle_ItemSelected"
-                SeparatorColor="#cccccccc"
+                SeparatorColor="#ccbbbbbb"
                 ItemsSource="{Binding Gyms}">
                 <ListView.ItemTemplate>
                     <DataTemplate>

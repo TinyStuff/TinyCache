@@ -1,4 +1,5 @@
-﻿using CoreAnimation;
+﻿using System;
+using CoreAnimation;
 using CoreGraphics;
 using gymlocator.Controls;
 using gymlocator.iOS.Renderers;
@@ -38,11 +39,29 @@ namespace gymlocator.iOS.Renderers
             return shadowLayer;
         }
 
+        protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+            if (e.PropertyName=="BackgroundOpacity") 
+            {
+                UpdateBackgroundColor();
+            }
+        }
+
+        private void UpdateBackgroundColor()
+        {
+            if (Element is DrawerControl dc) {
+                var clr = UIColor.FromWhiteAlpha(1, (float)dc.BackgroundOpacity);
+                Layer.BackgroundColor = clr.CGColor;
+            }
+        }
+
         protected override void OnElementChanged(ElementChangedEventArgs<DrawerControl> e)
         {
             base.OnElementChanged(e);
             Layer.MasksToBounds = true;
             Layer.CornerRadius = 15;
+            //UpdateBackgroundColor();
         }
 
         public override void Draw(CoreGraphics.CGRect rect)
