@@ -25,13 +25,16 @@ namespace gymlocator.Controls
         }
 
         public View OverlayView { get; set; }
+        public BoxView ShadowView { get; set; }
         public OverlayType Type { get; set; }
         public double MinSize { get; set; } = 55;
         public double MaxSize { get; set; } = 99999;
         public double InitialSize { get; set; }
+        public bool UseShadow { get; set; }
         //public float SnapPercent { get; set; } = 20;
         public bool Active { get; set; }
         public Rectangle Bounds { get; set; }
+        public Easing Easing { get; set; } = Easing.SpringOut;
 
         internal double offset { get; set; }
         internal bool active { get; set; }
@@ -59,6 +62,18 @@ namespace gymlocator.Controls
         public void AddOverlay(ViewOverlay overlay)
         {
             Overlays.Add(overlay);
+            if (overlay.UseShadow)
+            {
+                if (overlay.ShadowView == null)
+                {
+                    overlay.ShadowView = new BoxView()
+                    {
+                        Opacity = 0,
+                        BackgroundColor = Color.Black
+                    };
+                }
+                Children.Add(overlay.ShadowView);
+            }
             Children.Add(overlay.OverlayView);
             var gest = new PanGestureRecognizer();
             gest.PanUpdated += (sender, e) =>
@@ -100,19 +115,22 @@ namespace gymlocator.Controls
                     maxValue = TotalWidth;
                     break;
             }
-
-            maxValue = Math.Min(maxValue, overlay.MaxSize);
+            var maxAllowed = Math.Min(maxValue, overlay.MaxSize);
             var newSize = (orgSize - overlay.offset);
-
+            var backgroundOpacity = Math.Max(0, (newSize / maxAllowed) - 0.2f);
             if (overlay.active)
             {
+                if (overlay.UseShadow)
+                {
+                    overlay.ShadowView.Opacity = backgroundOpacity;
+                }
                 overlay.OverlayView.Layout(GetRect(overlay, newSize));
             }
             else
             {
                 var delta = overlay.lastOffset - overlay.offset;
                 var absDelta = Math.Abs(delta);
-                if (absDelta > 20)
+                if (absDelta > 14)
                 {
                     newSize = (delta > 0) ? maxValue : overlay.MinSize;
                 }
@@ -121,7 +139,11 @@ namespace gymlocator.Controls
                     newSize += (delta * 4);
                 }
                 var rect = GetRect(overlay, newSize);
-                overlay.OverlayView.LayoutTo(rect, 300, Easing.CubicOut);
+                overlay.OverlayView.LayoutTo(rect, 300, overlay.Easing);
+                if (overlay.UseShadow)
+                {
+                    overlay.ShadowView.FadeTo(backgroundOpacity, 300, Easing.Linear);
+                }
                 overlay.Bounds = rect;
                 overlay.offset = 0;
             }
@@ -132,7 +154,7 @@ namespace gymlocator.Controls
             if (!ov.active)
             {
                 ov.Bounds = GetRect(ov, ns);
-                ov.OverlayView.LayoutTo(ov.Bounds, 300, Easing.CubicInOut);
+                ov.OverlayView.LayoutTo(ov.Bounds, 300, ov.Easing);
             }
         }
 
@@ -148,7 +170,7 @@ namespace gymlocator.Controls
 
         public void MaximizeOverlay(ViewOverlay ov)
         {
-            SetOverlaySize(ov, TotalHeight);
+            SetOverlaySize(ov, 99999);
         }
 
         private Rectangle GetRect(ViewOverlay overlay, double newSize)
@@ -161,12 +183,13 @@ namespace gymlocator.Controls
             var maxValue = TotalHeight;
             if (overlay.IsHorizontal)
                 maxValue = TotalWidth;
-            maxValue = Math.Min(maxValue, overlay.MaxSize);
+
+            var maxAllowed = Math.Min(maxValue, overlay.MaxSize);
 
             if (newSize <= overlay.MinSize)
                 newSize = overlay.MinSize;
-            if (newSize >= maxValue)
-                newSize = maxValue;
+            if (newSize >= maxAllowed)
+                newSize = maxAllowed;
             switch (overlay.Type)
             {
                 case OverlayType.Bottom:

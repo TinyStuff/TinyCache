@@ -48,6 +48,8 @@ namespace gymlocator.Views
             var sliderOverlay = new ViewOverlay(slider, OverlayType.Bottom)
             {
                 MinSize = 65,
+                MaxSize = 580,
+                UseShadow = true,
                 InitialSize = 65
             };
 

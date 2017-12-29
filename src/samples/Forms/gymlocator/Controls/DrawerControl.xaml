@@ -6,15 +6,26 @@
     x:Class="gymlocator.Controls.DrawerControl">
     <ContentView.Content>
         <StackLayout
-            BackgroundColor="#22eeeeee"
-            Padding="10,5">
+            BackgroundColor="#22ffffff"
+            Padding="0,5">
+            <BoxView
+                HeightRequest="6"
+                Margin="0,3,0,0"
+                WidthRequest="40"
+                HorizontalOptions="Center"
+                Color="#cccccc" />
             <Controls:SearchBox
                 Placeholder="Search gyms"
-                Margin="5,10,5,5"
+                Margin="15,0,15,0"
                 HeightRequest="35"
                 Focused="Handle_Focused"
-                BackgroundColor="#33cccccc"
+                BackgroundColor="#22cccccc"
                 TextChanged="Handle_TextChanged" />
+            <BoxView
+                HeightRequest="1"
+                Margin="0,5,0,0"
+                HorizontalOptions="FillAndExpand"
+                Color="#cccccccc" />
             <ListView
                 BackgroundColor="Transparent"
                 x:Name="gymlist"
@@ -26,14 +37,16 @@
                     <DataTemplate>
                         <ViewCell>
                             <Grid
-                                Padding="10,5"
+                                Padding="25,5"
                                 RowSpacing="4"
                                 VerticalOptions="CenterAndExpand"
                                 ColumnSpacing="8"
                                 BackgroundColor="Transparent">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
+                                    <RowDefinition
+                                        Height="auto" />
+                                    <RowDefinition
+                                        Height="auto" />
                                 </Grid.RowDefinitions>
                                 <Label
                                     Grid.Row="0"
