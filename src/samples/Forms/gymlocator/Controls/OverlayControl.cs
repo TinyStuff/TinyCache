@@ -168,8 +168,9 @@ namespace gymlocator.Controls
         {
             if (!ov.active)
             {
-                ov.Bounds = GetRect(ov, ns);
-                ov.OverlayView.LayoutTo(ov.Bounds, 300, ov.Easing);
+                //ov.Bounds = GetRect(ov, ns);
+                ov.offset = -ns;
+                UpdateLayout(ov);
             }
         }
 

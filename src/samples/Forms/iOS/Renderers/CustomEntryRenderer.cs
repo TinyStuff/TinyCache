@@ -16,6 +16,7 @@ namespace gymlocator.iOS.Renderers
             Control.ReturnKeyType = UIReturnKeyType.Search;
             Control.ClearButtonMode = UITextFieldViewMode.Always;
             Control.BorderStyle = UITextBorderStyle.None;
+            Control.TextAlignment = UITextAlignment.Center;
             Layer.CornerRadius = 8;
             Layer.MasksToBounds = true;
             Layer.BorderColor = UIColor.Clear.CGColor;
