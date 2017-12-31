@@ -3,6 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:Controls="clr-namespace:gymlocator.Controls"
+    xmlns:tn="clr-namespace:TinyTranslations.Forms;assembly=TinyTranslations.Forms"
     x:Class="gymlocator.Controls.DrawerControl">
     <ContentView.Content>
         <StackLayout
@@ -16,7 +17,7 @@
                 HorizontalOptions="Center"
                 Color="#cccccc" />
             <Controls:SearchBox
-                Placeholder="Search gyms"
+                Placeholder="{tn:Translate Search gyms}"
                 x:Name="searchField"
                 Margin="15,0,15,0"
                 HeightRequest="35"

@@ -1,15 +1,23 @@
-﻿using Xamarin.Forms;
+﻿using System.Threading.Tasks;
+using TinyTranslations.Forms;
+using Xamarin.Forms;
 
 namespace gymlocator
 {
     public partial class App : Application
     {
+        TranslationHelper Translator;
+
         public App()
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new Views.MapPage());
+
             TinyPubSubLib.TinyPubSubForms.Init(this);
+            Translator = new TinyTranslations.Forms.TranslationHelper(new System.Uri("http://localhost:5000/"));
+            TinyTranslations.Forms.TranslateExtension.Translator = Translator;
+            Task.Run(() => Translator.ChangeCultureAsync("sv").RunSynchronously());
+            MainPage = new NavigationPage(new Views.MapPage());
         }
 
         protected override void OnStart()

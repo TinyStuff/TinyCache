@@ -3,20 +3,16 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="gymlocator.Views.GymDetailView"
+    xmlns:tn="clr-namespace:TinyTranslations.Forms;assembly=TinyTranslations.Forms"
     xmlns:Controls="clr-namespace:gymlocator.Controls"
     Title="{Binding Title}">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout
                 Padding="10,20">
-                <!--<Label
-                    Style="{StaticResource Strong}"
-                    Text="{Binding Name}" />
-                <Label
-                    Text="{Binding Description}" />-->
                 <Label
                     Style="{StaticResource Section}"
-                    Text="{Binding [Address]}" />
+                    Text="{tn:Translate Address}" />
                 <Label
                     Text="{Binding Address}" />
                 <StackLayout
@@ -28,7 +24,7 @@
                 </StackLayout>
                 <Label
                     Style="{StaticResource Section}"
-                    Text="{Binding [Features]}" />
+                    Text="{tn:Translate Features}" />
                 <Controls:RepeaterView
                     Padding="0,5"
                     ItemsSource="{Binding Features}">
@@ -47,7 +43,7 @@
                 <Label
                     Style="{StaticResource Section}"
                     IsVisible="{Binding HasPT}"
-                    Text="{Binding [Personal trainers]}" />
+                    Text="{tn:Translate Personal trainers}" />
                 <Controls:RepeaterView
                     Padding="0,5"
                     IsVisible="{Binding HasPT}"

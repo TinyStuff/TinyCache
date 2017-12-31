@@ -169,6 +169,10 @@
       <Project>{F4AD8131-C2CB-4803-B0DA-506B570060F1}</Project>
       <Name>gymlocator.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\TinyTranslations.Forms\TinyTranslations.Forms.csproj">
+      <Project>{3DF3984B-051B-448D-BB31-A1978C8F4E66}</Project>
+      <Name>TinyTranslations.Forms</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.5.0.121934\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.121934\build\netstandard1.0\Xamarin.Forms.targets')" />
