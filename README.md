@@ -11,8 +11,12 @@ var store = new XamarinPropertyStorage();
 TinyCache.TinyCache.SetCacheStore(store);
 
 // Fetch data with default policy
-var result = await TinyCache.TinyCache.UsePolicy<List<Data>>("cachekey", () => { return api.GetData("customdata"); });
+var result = await TinyCache.TinyCache.RunAsync<List<Data>>("cachekey", () => { return api.GetData("customdata"); });
 
+```
+## Caching DelegationHandler
+```csharp
+AuoRestApi api = new AuoRestApi(apiEndPoint, new NoClientCredentials(), new TinyCache.TinyCacheDelegationHandler());
 ```
 ## Some extra examples
 Not needed, but nice to have
