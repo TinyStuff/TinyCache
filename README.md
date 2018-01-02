@@ -32,5 +32,5 @@ Handle background changes
 TinyCache.TinyCache.OnUpdate += async (object sender, CacheUpdatedEvt e) => {
     var cacheKey = e.Key;
     var dataObject = e.Value;
-    // HandleObjectChange(cacheKey,dataObject as MyDataType);
+    async HandleObjectChange(cacheKey,dataObject as MyDataType);
 };
