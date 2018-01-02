@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace TinyCache
 {
-
     public static class TinyCache
     {
-		private static TinyCachePolicy defaultPolicy = new TinyCachePolicy();
+        private static TinyCachePolicy defaultPolicy = new TinyCachePolicy();
 
         public static ICacheStorage Storage { get; internal set; } = new MemoryDictionaryCache();
 
@@ -69,21 +68,21 @@ namespace TinyCache
         /// <param name="func">Function for populating cache</param>
         /// <param name="policy">Policy.</param>
         /// <typeparam name="T">Return type of function and cache object.</typeparam>
-        public static async Task<T> UsePolicy<T>(string key, Func<Task<T>> func, TinyCachePolicy policy = null)
+        public static async Task<T> RunAsync<T>(string key, Func<Task<T>> func, TinyCachePolicy policy = null)
         {
             object ret = Storage.Get(key, typeof(T));
 
             if (policy == null)
             {
                 policy = defaultPolicy;
-			}
-            
-            if (policy.Mode == TinyCacheModeEnum.FetchFirst)
+            }
+
+            if (policy.Mode == TinyCacheModeEnum.FetchFirst || ret == null)
             {
                 try
                 {
                     var realFetch = await TimeoutAfter<T>(func, policy.FetchTimeout);
-                    if (ret != null)
+                    if (realFetch != null)
                     {
                         ret = realFetch;
                         Store(key, realFetch);
@@ -99,12 +98,12 @@ namespace TinyCache
 
             if (ret == null)
             {
-				return default(T);
+                return default(T);
             }
 
             if (typeof(T) == typeof(object))
             {
-				return (T)ret;
+                return (T)ret;
             }
 
             return (T)Convert.ChangeType(ret, typeof(T));
@@ -172,19 +171,19 @@ namespace TinyCache
         {
             if (lastFetch.ContainsKey(key))
             {
-				lastFetch[key] = DateTime.Now;
+                lastFetch[key] = DateTime.Now;
             }
             else
             {
                 lastFetch.Add(key, DateTime.Now);
-			}
+            }
         }
 
         private static bool ShouldFetch(int v, string key)
         {
             if (!lastFetch.ContainsKey(key))
             {
-				return true;
+                return true;
             }
 
             var timeDiff = (DateTime.Now - lastFetch[key]).TotalMilliseconds;
@@ -199,13 +198,13 @@ namespace TinyCache
 
                 if (Storage.Store(key, val))
                 {
-					OnUpdate?.Invoke(val, new CacheUpdatedEvt() { Key = key, Value = val });
+                    OnUpdate?.Invoke(val, new CacheUpdatedEvt() { Key = key, Value = val });
                 }
             }
         }
 
         private static Dictionary<string, DateTime> lastFetch = new Dictionary<string, DateTime>();
 
-       
+
     }
 }

@@ -16,7 +16,7 @@ namespace gymlocator.Core
     public class DataStore
     {
         static Uri apiEndPoint = new Uri("http://f24s-gym-api03.azurewebsites.net/v1/");
-        GymAPI api = new GymAPI(apiEndPoint, new NoClientCredentials());
+        GymAPI api = new GymAPI(apiEndPoint, new NoClientCredentials(), new TinyCache.TinyCacheDelegationHandler());
         private string locale = System.Globalization.CultureInfo.CurrentCulture.Name;
 
         XamarinPropertyStorage store = new XamarinPropertyStorage();
@@ -25,11 +25,15 @@ namespace gymlocator.Core
         {
             api.BaseUri = apiEndPoint;
             store.LoadFromString(CacheResources.PreloadData.JsonData);
+
+            var preloadString = store.GetAllAsLoadableString();
+
             TinyCache.TinyCache.SetCacheStore(store);
             TinyCache.TinyCache.OnError += (sender, e) =>
             {
                 var i = 3;
             };
+
             TinyCache.TinyCache.SetBasePolicy(
                 new TinyCachePolicy()
                     .SetMode(TinyCacheModeEnum.CacheFirst)
@@ -38,8 +42,8 @@ namespace gymlocator.Core
 
         public async Task<IList<Gym>> GetGymsAsync()
         {
-            //var result = await api.GetGymsAsync(locale);
-            var result = await TinyCache.TinyCache.UsePolicy<List<Gym>>("gyms", () => { return api.GetGymListAsync(locale); });
+            var result = await api.GetGymsAsync(locale) as IList<Gym>;
+            //var result = await TinyCache.TinyCache.RunAsync<List<Gym>>("gyms", () => { return api.GetGymListAsync(locale); });
             return result;
         }
     }
