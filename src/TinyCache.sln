@@ -21,10 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyTranslations", "TinyTra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyTranslations.Forms", "TinyTranslations.Forms\TinyTranslations.Forms.csproj", "{3DF3984B-051B-448D-BB31-A1978C8F4E66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TranslationMessages", "..\..\TinyTranslation\src\backend\TranslationMessages\TranslationMessages.csproj", "{F542D597-66D6-41F5-AE6B-8277B88DF12D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyWebSockets", "..\..\TinyRow\src\xamarin-client\TinyWebSockets\TinyWebSockets.csproj", "{F9CA0874-88B6-4BFD-9EFD-428326E64482}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -119,30 +115,6 @@ Global
 		{3DF3984B-051B-448D-BB31-A1978C8F4E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DF3984B-051B-448D-BB31-A1978C8F4E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DF3984B-051B-448D-BB31-A1978C8F4E66}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F542D597-66D6-41F5-AE6B-8277B88DF12D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{F542D597-66D6-41F5-AE6B-8277B88DF12D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{F542D597-66D6-41F5-AE6B-8277B88DF12D}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{F542D597-66D6-41F5-AE6B-8277B88DF12D}.Release|iPhone.Build.0 = Release|Any CPU
-		{F542D597-66D6-41F5-AE6B-8277B88DF12D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{F542D597-66D6-41F5-AE6B-8277B88DF12D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{F542D597-66D6-41F5-AE6B-8277B88DF12D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{F542D597-66D6-41F5-AE6B-8277B88DF12D}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{F542D597-66D6-41F5-AE6B-8277B88DF12D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F542D597-66D6-41F5-AE6B-8277B88DF12D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F542D597-66D6-41F5-AE6B-8277B88DF12D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F542D597-66D6-41F5-AE6B-8277B88DF12D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9CA0874-88B6-4BFD-9EFD-428326E64482}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{F9CA0874-88B6-4BFD-9EFD-428326E64482}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{F9CA0874-88B6-4BFD-9EFD-428326E64482}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{F9CA0874-88B6-4BFD-9EFD-428326E64482}.Release|iPhone.Build.0 = Release|Any CPU
-		{F9CA0874-88B6-4BFD-9EFD-428326E64482}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{F9CA0874-88B6-4BFD-9EFD-428326E64482}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{F9CA0874-88B6-4BFD-9EFD-428326E64482}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{F9CA0874-88B6-4BFD-9EFD-428326E64482}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{F9CA0874-88B6-4BFD-9EFD-428326E64482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9CA0874-88B6-4BFD-9EFD-428326E64482}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9CA0874-88B6-4BFD-9EFD-428326E64482}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9CA0874-88B6-4BFD-9EFD-428326E64482}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{94889B01-47F7-4F8E-A618-B561EE1D18ED} = {F8948DAD-1D08-450B-BC11-49F2022E31A7}

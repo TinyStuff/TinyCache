@@ -1,13 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard1.4</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TinyTranslatons\TinyTranslations.csproj" />
-    <ProjectReference Include="..\..\..\TinyRow\src\xamarin-client\TinyWebSockets\TinyWebSockets.csproj" />
-    <ProjectReference Include="..\..\..\TinyTranslation\src\backend\TranslationMessages\TranslationMessages.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />

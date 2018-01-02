@@ -17,6 +17,13 @@ namespace TinyCache
         public static EventHandler<CacheUpdatedEvt> OnRemove;
         public static EventHandler<bool> OnLoadingChange;
 
+        /// <summary>
+        /// Timeouts function after specified amout of milliseconds.
+        /// </summary>
+        /// <returns>Result of running function.</returns>
+        /// <param name="task">Task to run.</param>
+        /// <param name="timeout">Timeout in milliseconds</param>
+        /// <typeparam name="TResult">Type of result when running function</typeparam>
         public static async Task<TResult> TimeoutAfter<TResult>(Func<Task<TResult>> task, int timeout)
         {
             OnLoadingChange?.Invoke(task, true);
@@ -37,6 +44,31 @@ namespace TinyCache
             }
         }
 
+        /// <summary>
+        /// Gets from cache storage and return null if not found.
+        /// </summary>
+        /// <returns>The from storage.</returns>
+        /// <param name="key">Cache key.</param>
+        /// <typeparam name="T">Type of the stored data.</typeparam>
+        public static T GetFromStorage<T>(string key)
+        {
+            object ret = Storage.Get(key, typeof(T));
+            if (typeof(T) == typeof(object))
+            {
+                return (T)ret;
+            }
+
+            return (T)Convert.ChangeType(ret, typeof(T));
+        }
+
+        /// <summary>
+        /// Fetch using policy
+        /// </summary>
+        /// <returns>The data from function or cache depending on policy.</returns>
+        /// <param name="key">Cache key.</param>
+        /// <param name="func">Function for populating cache</param>
+        /// <param name="policy">Policy.</param>
+        /// <typeparam name="T">Return type of function and cache object.</typeparam>
         public static async Task<T> UsePolicy<T>(string key, Func<Task<T>> func, TinyCachePolicy policy = null)
         {
             object ret = Storage.Get(key, typeof(T));
@@ -78,6 +110,39 @@ namespace TinyCache
             return (T)Convert.ChangeType(ret, typeof(T));
         }
 
+        /// <summary>
+        /// Sets the base policy wich will be used if not specified in each request.
+        /// </summary>
+        /// <param name="tinyCachePolicy">Tiny cache policy.</param>
+        public static void SetBasePolicy(TinyCachePolicy tinyCachePolicy)
+        {
+            defaultPolicy = tinyCachePolicy;
+        }
+
+        /// <summary>
+        /// Sets the cache storage type.
+        /// </summary>
+        /// <param name="store">Storage instance.</param>
+        public static void SetCacheStore(ICacheStorage store)
+        {
+            Storage = store;
+        }
+
+        /// <summary>
+        /// Remove the specified key from the cache store
+        /// </summary>
+        /// <returns>The remove.</returns>
+        /// <param name="key">Key.</param>
+        public static void Remove(string key)
+        {
+            Storage.Remove(key);
+            OnRemove?.Invoke(key, new CacheUpdatedEvt()
+            {
+                Key = key,
+                Value = null
+            });
+        }
+
         private static void StartBackgroundFetch<T>(string key, Func<Task<T>> func, TinyCachePolicy policy)
         {
             if (policy.UpdateCacheTimeout > 0)
@@ -101,26 +166,6 @@ namespace TinyCache
                 }
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
-        }
-
-        public static void SetBasePolicy(TinyCachePolicy tinyCachePolicy)
-        {
-            defaultPolicy = tinyCachePolicy;
-        }
-
-        public static void SetCacheStore(ICacheStorage store)
-        {
-            Storage = store;
-        }
-
-        public static void Remove(string key)
-        {
-            Storage.Remove(key);
-            OnRemove?.Invoke(key, new CacheUpdatedEvt()
-            {
-                Key = key,
-                Value = null
-            });
         }
 
         private static void AddLastFetch(string key)
@@ -161,71 +206,6 @@ namespace TinyCache
 
         private static Dictionary<string, DateTime> lastFetch = new Dictionary<string, DateTime>();
 
-        //        public static bool ReportExceptionsOnBackgroundFetch { get; set; } = true;
-
-        //        private static async Task<T> FetchWithCache<T>(string key, Func<Task<T>> func, int timeout = 4800)
-        //        {
-        //            T ret;
-        //            try
-        //            {
-        //                ret = await TimeoutAfter<T>(func, timeout);
-        //                if (ret != null)
-        //                {
-        //                    Store(key, ret);
-        //                }
-        //                else
-        //                    ret = await Get<T>(key, func, 1000, timeout * 10);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                ret = await Get<T>(key, func, 1000, timeout * 10);
-        //            }
-        //            return ret;
-        //        }
-
-        //        private static async Task<T> Get<T>(string key, Func<Task<T>> func, int refreshTime = 0, int timeout = 4800)
-        //        {
-        //            object ret = storage.Get(key, typeof(T));
-        //            if (ret == null)
-        //            {
-        //                try
-        //                {
-        //                    ret = await TimeoutAfter<T>(func, timeout);
-        //                    Store(key, ret);
-
-        //                }
-        //                catch (Exception ex)
-        //                {
-        //                    OnError?.Invoke(ret, ex);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                if (refreshTime > 0)
-        //                {
-        //                    if (ShouldFetch(refreshTime + timeout, key))
-        //                    {
-        //#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        //                        Task.Delay(refreshTime).ContinueWith(async (arg) =>
-        //                        {
-        //                            try
-        //                            {
-        //                                var newvalue = await TimeoutAfter<T>(func, timeout * 2);
-        //                                Store(key, newvalue);
-        //                            }
-        //                            catch (Exception ex)
-        //                            {
-        //                                if (ReportExceptionsOnBackgroundFetch)
-        //                                    OnError?.Invoke(ret, ex);
-        //                            }
-        //                        });
-        //                    }
-        //#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        //        }
-        //    }
-        //    if (typeof(T) == typeof(object))
-        //        return (T)ret;
-        //    return (T)Convert.ChangeType(ret, typeof(T));
-        //}
+       
     }
 }

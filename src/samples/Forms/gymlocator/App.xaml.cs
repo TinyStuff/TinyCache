@@ -15,7 +15,7 @@ namespace gymlocator
 
 
             TinyPubSubLib.TinyPubSubForms.Init(this);
-            Translator = new TranslationHelper(new System.Uri("http://localhost:5000/"), new System.Uri("ws://localhost:5000/ws"));
+            Translator = new TranslationHelper(new System.Uri("http://localhost:5000/"));
             ansExtension.Translator = Translator;
             //var oldMethod = Translator.FetchLanguageMethod;
             //Translator.FetchLanguageMethod = async (locale) => await TinyCache.TinyCache.UsePolicy<TranslationDictionary>("trans", () =>

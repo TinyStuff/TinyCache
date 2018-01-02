@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using TinyTranslations;
-using TinyWebSockets;
-using TinyWebSockets.Interfaces;
-using TranslationMessages.SocketMessages;
 using Xamarin.Forms;
 
 namespace TinyTranslations.Forms
 {
-    public class TranslationHelper : INotifyPropertyChanged, IMessageReceiver
+    public class TranslationHelper : INotifyPropertyChanged
     {
         public TranslationHelper()
         {
@@ -25,19 +22,6 @@ namespace TinyTranslations.Forms
             {
                 return httpClient.GetTranslations(locale);
             };
-        }
-
-        private Uri WsUrl { get; }
-
-        public TranslationHelper(Uri serverUri, Uri wsUrl) : this(serverUri)
-        {
-            WsUrl = wsUrl;
-            socket = new WebSocketClientService();
-
-            msgHandler = new MessageHandler(socket);
-
-            msgHandler.RegisterActionReceiver(this);
-
         }
 
         public static readonly string DeviceSpecificLanguage =
@@ -77,8 +61,6 @@ namespace TinyTranslations.Forms
         }
 
         private TranslationDictionary _translations;
-        private readonly MessageHandler msgHandler;
-        private readonly WebSocketClientService socket;
 
         public TranslationDictionary Translations
         {
@@ -119,7 +101,6 @@ namespace TinyTranslations.Forms
         public async Task ChangeCultureAsync(string locale)
         {
             currentLocale = locale;
-            SendLanguageChange();
             var newdict = await FetchLanguageMethod(locale);
             newdict.OnAdd += TranslationAdded;
             if (_translations != null)
@@ -128,18 +109,11 @@ namespace TinyTranslations.Forms
             propertyChanged(nameof(Translations));
         }
 
-        void TranslationAdded(object sender, System.Collections.Generic.KeyValuePair<string, string> e)
-        {
-            Task.Run(() =>
-            {
-                httpClient.AddTranslation(e);
-                msgHandler.SendMessage(new TranslationAdded()
-                {
-                    Key = e.Key,
-                    Word = e.Value
-                });
-            });
-        }
+        void TranslationAdded(object sender, KeyValuePair<string, string> e) =>
+            Task.Run(async () =>
+                 {
+                     await httpClient.AddTranslationAsync(e);
+                 });
 
         public void Init(string locale = "")
         {
@@ -155,38 +129,6 @@ namespace TinyTranslations.Forms
             return Translations[key];
         }
 
-        public void SetStateService(MessageHandler stateService)
-        {
-            Task.Run(async () =>
-            {
-                await socket.StartListening(WsUrl);
-                await socket.StartReceivingMessages();
-                SendLanguageChange();
-            });
-        }
 
-        private void SendLanguageChange()
-        {
-            msgHandler.SendMessage(new LanguageChange()
-            {
-                Locale = CurrentLocale
-            });
-        }
-
-        public void HandleAction(IMessage action)
-        {
-            switch (action)
-            {
-                case TranslationAdded added:
-                    Translations.Add(added.Key, added.Word);
-                    break;
-                case LanguageChanged langchange:
-
-                    break;
-                case TranslationUpdated updated:
-                    Translations.Add(updated.Key, updated.Word);
-                    break;
-            }
-        }
     }
 }

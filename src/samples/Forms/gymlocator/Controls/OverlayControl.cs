@@ -41,10 +41,6 @@ namespace gymlocator.Controls
         public bool Active { get; set; }
         public Rectangle Bounds { get; set; }
         public Easing Easing { get; set; } = Easing.SpringOut;
-
-        internal double offset { get; set; }
-        internal bool active { get; set; }
-        internal double lastOffset { get; set; }
         public bool IsHorizontal
         {
             get
@@ -52,6 +48,10 @@ namespace gymlocator.Controls
                 return Type == OverlayType.Left || Type == OverlayType.Right;
             }
         }
+
+        internal double offset { get; set; }
+        internal bool active { get; set; }
+        internal double lastOffset { get; set; }
 
     }
 
@@ -130,7 +130,7 @@ namespace gymlocator.Controls
             {
                 if (overlay.UseShadow)
                 {
-                    overlay.ShadowView.Opacity = backgroundOpacity;
+                    overlay.ShadowView.Opacity = backgroundOpacity * 0.5f;
                     if (overlay.OverlayView is DrawerControl dc)
                     {
                         dc.BackgroundOpacity = backgroundOpacity;
@@ -155,7 +155,7 @@ namespace gymlocator.Controls
                 overlay.OverlayView.LayoutTo(rect, 300, overlay.Easing);
                 if (overlay.UseShadow)
                 {
-                    overlay.ShadowView.FadeTo(backgroundOpacity, 300, Easing.Linear);
+                    overlay.ShadowView.FadeTo(backgroundOpacity * 0.5f, 300, Easing.Linear);
                     if (overlay.OverlayView is DrawerControl dc)
                     {
                         dc.BackgroundOpacity = backgroundOpacity;
@@ -168,7 +168,7 @@ namespace gymlocator.Controls
 
         private static double GetBackgroundOpacity(double maxAllowed, double newSize)
         {
-            return Math.Min(0.8, Math.Max(0, (newSize / maxAllowed)));
+            return Math.Min(1, Math.Max(0, (newSize / maxAllowed)));
         }
 
         private void SetOverlaySize(ViewOverlay ov, double ns)

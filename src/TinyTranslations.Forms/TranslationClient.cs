@@ -39,7 +39,7 @@ namespace TinyTranslations
             return ret;
         }
 
-        public async Task<string> AddTranslation(KeyValuePair<string, string> e)
+        public async Task<string> AddTranslationAsync(KeyValuePair<string, string> e)
         {
             var baseUrl = baseUri.AbsoluteUri + "api/translation/default/" + System.Net.WebUtility.UrlEncode(e.Key);
             if (e.Key.Equals(e.Value))
