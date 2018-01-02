@@ -1,7 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <Description />
+    <PackageLicenseUrl>https://github.com/matst80/tinycache/LICENSE</PackageLicenseUrl>
+    <RepositoryType>Git</RepositoryType>
+    <RepositoryUrl>https://github.com/matst80/tinycache</RepositoryUrl>
+    <Company />
+    <Product>TinyCache</Product>
+    <Authors>Mats Törnberg</Authors>
+    <Version>1.0.0</Version>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Copyright>Copyright 2017</Copyright>
   </PropertyGroup>
 
 </Project>

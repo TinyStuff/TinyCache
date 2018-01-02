@@ -133,7 +133,7 @@ namespace TinyTranslations
 
         public bool IsReadOnly => false;
 
-        public bool IsPrimaryLanguage { get; internal set; }
+        public bool IsPrimaryLanguage { get; set; }
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 

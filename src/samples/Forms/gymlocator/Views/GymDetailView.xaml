@@ -13,6 +13,9 @@
                 <Label
                     Style="{StaticResource Section}"
                     Text="{Tr:ans Address}" />
+                <!--<Label
+                    Style="{StaticResource Section}"
+                    Text="{Tr:ans Text='Find address' Key='app2an'}" />-->
                 <Label
                     Text="{Binding Address}" />
                 <StackLayout

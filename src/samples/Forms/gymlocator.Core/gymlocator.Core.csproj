@@ -10,9 +10,9 @@
     <Folder Include="CacheResources\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.2.4" />
     <PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="CacheResources\reload.json" />
