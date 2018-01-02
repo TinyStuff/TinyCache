@@ -111,6 +111,13 @@ namespace TinyTranslations.Forms
             Task.Run(() => httpClient.AddTranslation(e));
         }
 
+        public void Init(string locale = "") 
+        {
+            if (string.IsNullOrEmpty(locale))
+                locale = DeviceSpecificLanguage;
+            Task.Run(() => ChangeCultureAsync(locale).RunSynchronously());
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string Translate(string key)

@@ -3,7 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:Controls="clr-namespace:gymlocator.Controls"
-    xmlns:tn="clr-namespace:TinyTranslations.Forms;assembly=TinyTranslations.Forms"
+    xmlns:Tr="clr-namespace:TinyTranslations.Forms;assembly=TinyTranslations.Forms"
     x:Class="gymlocator.Controls.DrawerControl">
     <ContentView.Content>
         <StackLayout
@@ -17,7 +17,7 @@
                 HorizontalOptions="Center"
                 Color="#cccccc" />
             <Controls:SearchBox
-                Placeholder="{tn:Translate Search gyms}"
+                Placeholder="{Tr:ans Search gyms}"
                 x:Name="searchField"
                 Margin="15,0,15,0"
                 HeightRequest="35"
@@ -55,11 +55,17 @@
                                     Grid.Row="0"
                                     Grid.Column="0"
                                     Text="{Binding Name}" />
-                                <Label
-                                    Grid.Row="1"
-                                    Style="{StaticResource EmailLabel}"
-                                    Grid.Column="0"
-                                    Text="{Binding Email}" />
+                                <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                                    <Label
+                                        Style="{StaticResource EmailLabel}"
+                                        Grid.Column="0"
+                                        Text="{Tr:ans Email address}" LineBreakMode="TailTruncation" />
+                                    <Label
+                                        Grid.Row="1"
+                                        Style="{StaticResource EmailLabel}"
+                                        Grid.Column="0"
+                                        Text="{Binding Email}" LineBreakMode="TailTruncation" />
+                                </StackLayout>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

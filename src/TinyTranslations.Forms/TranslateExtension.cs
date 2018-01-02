@@ -5,9 +5,9 @@ using Xamarin.Forms.Xaml;
 namespace TinyTranslations.Forms
 {
     [ContentProperty("Text")]
-    public class TranslateExtension : IMarkupExtension
+    public class ansExtension : IMarkupExtension
     {
-        public TranslateExtension()
+        public ansExtension()
         {
         }
 
@@ -25,7 +25,10 @@ namespace TinyTranslations.Forms
             if (Translator == null)
                 return Text;
 
-            return Translator.Translations[Text];
+            if (string.IsNullOrEmpty(Key))
+                return Translator.Translations[Text];
+            else
+                return Translator.Translate(Key, Text);
 
         }
     }

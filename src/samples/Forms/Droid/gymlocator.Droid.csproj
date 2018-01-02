@@ -203,6 +203,18 @@
       <Project>{3DF3984B-051B-448D-BB31-A1978C8F4E66}</Project>
       <Name>TinyTranslations.Forms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\TinyCache\TinyCache.csproj">
+      <Project>{68B5BBBD-6C9B-4DFF-B5F2-3CAF43B1B1FA}</Project>
+      <Name>TinyCache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\TinyCache.Forms\TinyCache.Forms.csproj">
+      <Project>{C81B99C0-BACA-4B65-A18D-76389F493353}</Project>
+      <Name>TinyCache.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\TinyTranslatons\TinyTranslations.csproj">
+      <Project>{399C3D72-15B5-4FB2-BD8E-B46CC2D67EE9}</Project>
+      <Name>TinyTranslations</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Compat.25.4.0.2\build\MonoAndroid70\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Compat.25.4.0.2\build\MonoAndroid70\Xamarin.Android.Support.Compat.targets')" />

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using TinyTranslations;
 using TinyTranslations.Forms;
 using Xamarin.Forms;
 
@@ -15,8 +16,14 @@ namespace gymlocator
 
             TinyPubSubLib.TinyPubSubForms.Init(this);
             Translator = new TinyTranslations.Forms.TranslationHelper(new System.Uri("http://localhost:5000/"));
-            TinyTranslations.Forms.TranslateExtension.Translator = Translator;
-            Task.Run(() => Translator.ChangeCultureAsync("sv").RunSynchronously());
+            TinyTranslations.Forms.ansExtension.Translator = Translator;
+            //var oldMethod = Translator.FetchLanguageMethod;
+            //Translator.FetchLanguageMethod = async (locale) => await TinyCache.TinyCache.UsePolicy<TranslationDictionary>("trans", () =>
+                //{
+                //    return oldMethod(locale);
+                //});
+
+            Translator.Init("sv");
             MainPage = new NavigationPage(new Views.MapPage());
         }
 
