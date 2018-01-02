@@ -7,11 +7,12 @@ Small helper for offline and caching of long-running processes
 // Create a cache storage, in memory cache will be the default.
 var store = new XamarinPropertyStorage();
 
+// Set cache storage
+TinyCache.TinyCache.SetCacheStore(store);
+
 // Fetch data with default policy
 var result = await TinyCache.TinyCache.UsePolicy<List<Data>>("cachekey", () => { return api.GetData("customdata"); });
 
-// Set cache storage
-TinyCache.TinyCache.SetCacheStore(store);
 ```
 ## Some extra examples
 Not needed, but nice to have
