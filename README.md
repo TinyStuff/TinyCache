@@ -4,6 +4,37 @@ Small helper for offline and caching of long-running processes
 
 ![buildstatus](https://io2gamelabs.visualstudio.com/_apis/public/build/definitions/be16d002-5786-41a1-bf3b-3e13d5e80aa0/14/badge)
 
+### Use file storage
+Install NuGet package TinyCache.FileStorage.
+
+```csharp
+// Create a cache storage, in memory cache will be the default.
+var store = new FileStorage();
+
+var cacheFolder = string.Empty;
+            
+#if __IOS__ || __MACOS__
+            cacheFolder = NSSearchPath.GetDirectories(NSSearchPathDirectory.CachesDirectory, NSSearchPathDomain.User)[0];
+#elif __ANDROID__
+            cacheFolder = Application.Context.CacheDir.AbsolutePath;
+#elif __UWP__
+            cacheFolder = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
+#else
+            cacheFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+#endif
+
+store.Initialize(cacheFolder);
+
+// Set cache storage
+TinyCache.TinyCache.SetCacheStore(store);
+
+// Fetch data with default policy
+var result = await TinyCache.TinyCache.RunAsync<List<Data>>("cachekey", () => { return api.GetData("customdata"); });
+
+
+### Use property storage in Xamarin.Forms
+Install NuGet package TinyCache.Forms.
+
 ```csharp
 // Create a cache storage, in memory cache will be the default.
 var store = new XamarinPropertyStorage();
