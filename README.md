@@ -2,6 +2,7 @@
 Small helper for offline and caching of long-running processes
 ## Example
 
+![buildstatus](https://io2gamelabs.visualstudio.com/_apis/public/build/definitions/be16d002-5786-41a1-bf3b-3e13d5e80aa0/14/badge)
 
 ```csharp
 // Create a cache storage, in memory cache will be the default.
