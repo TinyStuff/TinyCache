@@ -42,8 +42,8 @@ namespace gymlocator.Core
 
         public async Task<IList<Gym>> GetGymsAsync()
         {
-            var result = await api.GetGymsAsync(locale) as IList<Gym>;
-            //var result = await TinyCache.TinyCache.RunAsync<List<Gym>>("gyms", () => { return api.GetGymListAsync(locale); });
+            //var result = await api.GetGymsAsync(locale) as IList<Gym>;
+            var result = await TinyCache.TinyCache.RunAsync<List<Gym>>("gyms", () => { return api.GetGymListAsync(locale); });
             return result;
         }
     }

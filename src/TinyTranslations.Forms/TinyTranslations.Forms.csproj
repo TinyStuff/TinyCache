@@ -8,7 +8,6 @@
     <ProjectReference Include="..\TinyTranslatons\TinyTranslations.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.121934" />
     <PackageReference Include="System.ComponentModel" Version="4.3.0" />
   </ItemGroup>

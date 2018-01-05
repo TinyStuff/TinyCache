@@ -22,7 +22,7 @@ namespace gymlocator.iOS.Renderers
             visualEffectView = new UIVisualEffectView(blur);
             visualEffectView.TintColor = UIColor.White;
             visualEffectView.Layer.MasksToBounds = true;
-            visualEffectView.Layer.CornerRadius = 15;
+            visualEffectView.Layer.CornerRadius = 10;
             InsertSubview(visualEffectView, 0);
         }
 
@@ -30,8 +30,8 @@ namespace gymlocator.iOS.Renderers
         {
             var shadowLayer = new CALayer();
             shadowLayer.BackgroundColor = UIColor.Black.CGColor;
-            shadowLayer.ShadowOpacity = 0.8f;
-            shadowLayer.ShadowRadius = 5;
+            shadowLayer.ShadowOpacity = 1f;
+            shadowLayer.ShadowRadius = 7;
             shadowLayer.ShadowOffset = new CGSize(0, 0);
             shadowLayer.ShadowColor = UIColor.Black.CGColor;
             shadowLayer.ShadowPath = UIBezierPath.FromRect(rect).CGPath;
@@ -60,7 +60,7 @@ namespace gymlocator.iOS.Renderers
         {
             base.OnElementChanged(e);
             Layer.MasksToBounds = true;
-            Layer.CornerRadius = 15;
+            Layer.CornerRadius = 10;
             //UpdateBackgroundColor();
         }
 
@@ -68,8 +68,8 @@ namespace gymlocator.iOS.Renderers
         {
             
             visualEffectView.Frame = rect;
-            Layer.InsertSublayer(CreateShadowLayer(new CGRect(rect.Width + 2, 3, 4, rect.Height + 2)), 0);
-            Layer.InsertSublayer(CreateShadowLayer(new CGRect(3, rect.Height + 2, rect.Width, 4.0f)), 0);
+            Layer.InsertSublayer(CreateShadowLayer(new CGRect(rect.Width + 5, 6, 7, rect.Height + 5)), 0);
+            Layer.InsertSublayer(CreateShadowLayer(new CGRect(6, rect.Height + 5, rect.Width, 7.0f)), 0);
             base.Draw(rect);
         }
 

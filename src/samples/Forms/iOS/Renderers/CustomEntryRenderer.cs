@@ -9,19 +9,19 @@ using Xamarin.Forms.Platform.iOS;
 
 namespace gymlocator.iOS.Renderers
 {
-    public class SearchBoxEntryRenderer : EntryRenderer
+    public class SearchBoxEntryRenderer : SearchBarRenderer
     {
-        protected override void OnElementChanged(ElementChangedEventArgs<Entry> e)
-        {
-            base.OnElementChanged(e);
-            Control.ReturnKeyType = UIReturnKeyType.Search;
-            Control.ClearButtonMode = UITextFieldViewMode.Always;
-            Control.BorderStyle = UITextBorderStyle.None;
-            Control.TextAlignment = UITextAlignment.Center;
-            Layer.CornerRadius = 8;
-            Layer.MasksToBounds = true;
-            Layer.BorderColor = UIColor.Clear.CGColor;
+        //protected override void OnElementChanged(ElementChangedEventArgs<SearchBar> e)
+        //{
+        //    base.OnElementChanged(e);
+        //    Control.ReturnKeyType = UIReturnKeyType.Search;
+        //    Control.ClearButtonMode = UITextFieldViewMode.Always;
+        //    Control.BorderStyle = UITextBorderStyle.None;
+        //    Control.TextAlignment = UITextAlignment.Center;
+        //    Layer.CornerRadius = 8;
+        //    Layer.MasksToBounds = true;
+        //    Layer.BorderColor = UIColor.Clear.CGColor;
 
-        }
+        //}
     }
 }

@@ -16,8 +16,17 @@ namespace TinyTranslations.Forms
 
         public TranslationHelper(Uri serverUri)
         {
-            this.serverUri = serverUri;
             httpClient = new TranslationClient(serverUri);
+            SetFetchMethod();
+        }
+
+        public TranslationHelper(TranslationClient client)
+        {
+            httpClient = client;
+            SetFetchMethod();
+        }
+
+        private void SetFetchMethod() {
             FetchLanguageMethod = (locale) =>
             {
                 return httpClient.GetTranslations(locale);
@@ -41,7 +50,7 @@ namespace TinyTranslations.Forms
         }
 
         private TranslationClient httpClient;
-        private Uri serverUri;
+
         string currentLocale = DeviceSpecificLanguage;
 
         public string CurrentLocale
@@ -86,16 +95,7 @@ namespace TinyTranslations.Forms
 
         private void changeCulture(string locale)
         {
-            currentLocale = locale;
-            Task.Run(async () =>
-            {
-                var newdict = await FetchLanguageMethod(locale);
-                newdict.OnAdd += TranslationAdded;
-                if (_translations != null)
-                    _translations.OnAdd -= TranslationAdded;
-                _translations = newdict;
-                propertyChanged(nameof(Translations));
-            });
+            Task.Run(async () => await ChangeCultureAsync(locale));
         }
 
         public async Task ChangeCultureAsync(string locale)
@@ -119,7 +119,8 @@ namespace TinyTranslations.Forms
         {
             if (string.IsNullOrEmpty(locale))
                 locale = DeviceSpecificLanguage;
-            Task.Run(() => ChangeCultureAsync(locale).RunSynchronously());
+            Task.Run(async () => await ChangeCultureAsync(locale));
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

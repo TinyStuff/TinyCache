@@ -16,37 +16,45 @@ namespace TinyTranslations
         private Uri baseUri;
 
         private HttpClient _client;
-        public virtual HttpClient Client
+
+        public HttpMessageHandler MessageHandler { get; set; }
+
+        public virtual HttpClient GetHttpClient()
         {
-            get
+            if (_client == null)
             {
-                if (_client == null)
+                if (MessageHandler==null) {
                     _client = new HttpClient();
-                return _client;
+                }
+                else {
+                    _client = new HttpClient(MessageHandler);
+                }
             }
-            set
-            {
-                _client = value;
-            }
+            return _client;
         }
 
         public virtual async Task<TranslationDictionary> GetTranslations(string locale)
         {
             var ret = new TranslationDictionary(locale);
-            var translationString = await Client.GetStringAsync(baseUri.AbsoluteUri + "api/translation/" + locale);
+            var translationString = await GetHttpClient().GetStringAsync(baseUri.AbsoluteUri + "api/translation/" + locale);
             var dict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(translationString);
             ret.Populate(locale, dict);
             return ret;
         }
 
+        private string GetUrl(string value) {
+            var ret = System.Net.WebUtility.UrlEncode(value);
+            return ret.Replace("+","%20");
+        }
+
         public async Task<string> AddTranslationAsync(KeyValuePair<string, string> e)
         {
-            var baseUrl = baseUri.AbsoluteUri + "api/translation/default/" + System.Net.WebUtility.UrlEncode(e.Key);
+            var baseUrl = baseUri.AbsoluteUri + "api/translation/default/" + GetUrl(e.Key);
             if (e.Key.Equals(e.Value))
-                return await Client.GetStringAsync(baseUrl);
+                return await GetHttpClient().GetStringAsync(baseUrl);
             else
             {
-                var ret = await Client.PutAsync(baseUrl + "/" + System.Net.WebUtility.UrlEncode(e.Value), null);
+                var ret = await GetHttpClient().PutAsync(baseUrl + "/" + GetUrl(e.Value), null);
                 return e.Value;
             }
         }

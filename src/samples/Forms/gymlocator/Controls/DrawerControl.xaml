@@ -2,6 +2,7 @@
 <ContentView
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="Transparent"
     xmlns:Controls="clr-namespace:gymlocator.Controls"
     xmlns:Tr="clr-namespace:TinyTranslations.Forms;assembly=TinyTranslations.Forms"
     x:Class="gymlocator.Controls.DrawerControl">
@@ -19,10 +20,10 @@
             <Controls:SearchBox
                 Placeholder="{Tr:ans Search gyms}"
                 x:Name="searchField"
-                Margin="15,0,15,0"
+                Margin="8,0,8,0"
                 HeightRequest="35"
+                BackgroundColor="Transparent"
                 Focused="Handle_Focused"
-                BackgroundColor="#44cccccc"
                 TextChanged="Handle_TextChanged" />
             <BoxView
                 HeightRequest="1"

@@ -13,17 +13,16 @@ namespace gymlocator
         {
             InitializeComponent();
 
-
             TinyPubSubLib.TinyPubSubForms.Init(this);
-            Translator = new TranslationHelper(new System.Uri("http://localhost:5000/"));
+            Translator = new TranslationHelper(new System.Uri("http://tinytranslation.azurewebsites.net"));
+            var tempLocale = "es";
             ansExtension.Translator = Translator;
-            //var oldMethod = Translator.FetchLanguageMethod;
-            //Translator.FetchLanguageMethod = async (locale) => await TinyCache.TinyCache.UsePolicy<TranslationDictionary>("trans", () =>
-            //{
-            //    return oldMethod(locale);
-            //});
-
-            Translator.Init("sv");
+            var oldMethod = Translator.FetchLanguageMethod;
+            Translator.FetchLanguageMethod = async (locale) => await TinyCache.TinyCache.RunAsync<TranslationDictionary>("trans-"+tempLocale, () =>
+            {
+                return oldMethod(locale);
+            });
+            Translator.Init(tempLocale);
             MainPage = new NavigationPage(new Views.MapPage());
         }
 

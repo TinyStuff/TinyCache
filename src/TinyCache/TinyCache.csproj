@@ -14,4 +14,7 @@
     <Copyright>Copyright 2017</Copyright>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
 </Project>
