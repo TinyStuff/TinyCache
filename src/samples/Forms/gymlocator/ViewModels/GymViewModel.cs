@@ -136,6 +136,8 @@ namespace gymlocator.ViewModels
 
         public async void Init(TKCustomMap map = null)
         {
+            ShoppingService ss = new ShoppingService();
+            var lists = await ss.GetShoppingLists();
             if (map != null)
                 this.map = map;
             if (!hasRunInit)

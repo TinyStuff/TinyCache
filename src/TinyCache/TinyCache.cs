@@ -105,8 +105,8 @@ namespace TinyCache
             {
                 return (T)ret;
             }
-
-            return (T)Convert.ChangeType(ret, typeof(T));
+            return (T)ret;
+            //return (T)Convert.ChangeType(ret, typeof(T));
         }
 
         /// <summary>
