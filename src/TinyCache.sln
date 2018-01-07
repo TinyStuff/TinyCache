@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyTranslations", "TinyTra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyTranslations.Forms", "TinyTranslations.Forms\TinyTranslations.Forms.csproj", "{3DF3984B-051B-448D-BB31-A1978C8F4E66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCache.FileStorage", "TinyCache.FileStorage\TinyCache.FileStorage.csproj", "{D85A1E52-EC75-4664-AC7F-86F668C303EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -115,6 +117,18 @@ Global
 		{3DF3984B-051B-448D-BB31-A1978C8F4E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DF3984B-051B-448D-BB31-A1978C8F4E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DF3984B-051B-448D-BB31-A1978C8F4E66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D85A1E52-EC75-4664-AC7F-86F668C303EA}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{D85A1E52-EC75-4664-AC7F-86F668C303EA}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{D85A1E52-EC75-4664-AC7F-86F668C303EA}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{D85A1E52-EC75-4664-AC7F-86F668C303EA}.Release|iPhone.Build.0 = Release|Any CPU
+		{D85A1E52-EC75-4664-AC7F-86F668C303EA}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{D85A1E52-EC75-4664-AC7F-86F668C303EA}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{D85A1E52-EC75-4664-AC7F-86F668C303EA}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{D85A1E52-EC75-4664-AC7F-86F668C303EA}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{D85A1E52-EC75-4664-AC7F-86F668C303EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D85A1E52-EC75-4664-AC7F-86F668C303EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D85A1E52-EC75-4664-AC7F-86F668C303EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D85A1E52-EC75-4664-AC7F-86F668C303EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{94889B01-47F7-4F8E-A618-B561EE1D18ED} = {F8948DAD-1D08-450B-BC11-49F2022E31A7}
