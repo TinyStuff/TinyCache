@@ -45,8 +45,10 @@ namespace gymlocator.ViewModels
 
         public ICommand DoRefresh => new Command(async () =>
         {
+            IsBusy = true;
             var gyms = await dataModel.GetGymsAsync();
             PopulateGyms(gyms);
+            IsBusy = false;
         });
 
         public void FilterGyms(string newTextValue)
@@ -136,8 +138,8 @@ namespace gymlocator.ViewModels
 
         public async void Init(TKCustomMap map = null)
         {
-            ShoppingService ss = new ShoppingService();
-            var lists = await ss.GetShoppingLists();
+            //var ss = new ShoppingService();
+            //var lists = await ss.GetShoppingLists();
             if (map != null)
                 this.map = map;
             if (!hasRunInit)

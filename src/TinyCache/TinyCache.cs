@@ -10,6 +10,7 @@ namespace TinyCache
         private static TinyCachePolicy defaultPolicy = new TinyCachePolicy();
 
         public static ICacheStorage Storage { get; internal set; } = new MemoryDictionaryCache();
+        public static ICacheStorage SecondaryStorage { get; internal set; }
 
         public static EventHandler<Exception> OnError;
         public static EventHandler<CacheUpdatedEvt> OnUpdate;
@@ -52,12 +53,18 @@ namespace TinyCache
         public static T GetFromStorage<T>(string key)
         {
             object ret = Storage.Get(key, typeof(T));
+            if (ret == null && SecondaryStorage != null)
+            {
+                ret = SecondaryStorage.Get(key, typeof(T));
+                if (ret != null)
+                    Storage.Store(key, ret);
+            }
             if (typeof(T) == typeof(object))
             {
                 return (T)ret;
             }
 
-            return (T)Convert.ChangeType(ret, typeof(T));
+            return (T)ret;
         }
 
         /// <summary>
@@ -70,8 +77,11 @@ namespace TinyCache
         /// <typeparam name="T">Return type of function and cache object.</typeparam>
         public static async Task<T> RunAsync<T>(string key, Func<Task<T>> func, TinyCachePolicy policy = null)
         {
-            object ret = Storage.Get(key, typeof(T));
-
+            var ttype = typeof(T);
+            object ret = Storage.Get(key, ttype);
+            if (ret==null && SecondaryStorage!=null){
+                ret = SecondaryStorage.Get(key, ttype);
+            }
             if (policy == null)
             {
                 policy = defaultPolicy;
@@ -101,12 +111,11 @@ namespace TinyCache
                 return default(T);
             }
 
-            if (typeof(T) == typeof(object))
+            if (ttype == typeof(object))
             {
                 return (T)ret;
             }
             return (T)ret;
-            //return (T)Convert.ChangeType(ret, typeof(T));
         }
 
         /// <summary>
@@ -119,12 +128,22 @@ namespace TinyCache
         }
 
         /// <summary>
-        /// Sets the cache storage type.
+        /// Sets the permanent (secondary) cache storage type.
         /// </summary>
         /// <param name="store">Storage instance.</param>
         public static void SetCacheStore(ICacheStorage store)
         {
-            Storage = store;
+            SecondaryStorage = store;
+        }
+
+        /// <summary>
+        /// Sets the permanent cache storage type.
+        /// </summary>
+        /// <param name="store">Storage instance.</param>
+        public static void SetCacheStore(ICacheStorage primary, ICacheStorage secondary)
+        {
+            Storage = primary;
+            SecondaryStorage = secondary;
         }
 
         /// <summary>
@@ -198,6 +217,13 @@ namespace TinyCache
 
                 if (Storage.Store(key, val))
                 {
+                    if (SecondaryStorage != null)
+                    {
+                        Task.Delay(10).ContinueWith((a) =>
+                        {
+                            SecondaryStorage.Store(key,val);
+                        });
+                    }
                     OnUpdate?.Invoke(val, new CacheUpdatedEvt() { Key = key, Value = val });
                 }
             }

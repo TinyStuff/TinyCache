@@ -34,6 +34,9 @@
                 BackgroundColor="Transparent"
                 x:Name="gymlist"
                 RowHeight="55"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy}"
+                RefreshCommand="{Binding DoRefresh}"
                 ItemSelected="Handle_ItemSelected"
                 SeparatorColor="#cccccccc"
                 ItemsSource="{Binding Gyms}">
