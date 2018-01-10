@@ -61,8 +61,7 @@ namespace TinyCache.FileStorage
 
             if (hasChanged)
             {
-                File.Create(path);
-
+ 
                 File.WriteAllText(path, json, Encoding.UTF8);
             }
 
