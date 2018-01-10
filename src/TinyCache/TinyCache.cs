@@ -186,15 +186,19 @@ namespace TinyCache
             }
         }
 
+        private static Object thisLock = new Object(); 
         private static void AddLastFetch(string key)
         {
-            if (lastFetch.ContainsKey(key))
+            lock (thisLock)
             {
-                lastFetch[key] = DateTime.Now;
-            }
-            else
-            {
-                lastFetch.Add(key, DateTime.Now);
+                if (lastFetch.ContainsKey(key))
+                {
+                    lastFetch[key] = DateTime.Now;
+                }
+                else
+                {
+                    lastFetch.Add(key, DateTime.Now);
+                }
             }
         }
 
