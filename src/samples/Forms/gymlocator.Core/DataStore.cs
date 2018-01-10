@@ -21,8 +21,10 @@ namespace gymlocator.Core
 
         public ShoppingService()
         {
+            var retryHandler = new TinyRetryDelegationHandler();
+            retryHandler.RetryOn<Exception>();
             //_client = new ShoppingAPI(new Uri("http://localhost:5000"), new UnsafeCredentials(), new TinyCache.TinyCacheDelegationHandler());
-            _client = new ShoppingAPI(new Uri("http://localhost:5000"), new NoClientCredentials());
+            _client = new ShoppingAPI(new Uri("http://localhost:5000"), new NoClientCredentials(), retryHandler);
         }
 
         public async Task<IList<ShoppingList>> GetShoppingLists()
@@ -61,14 +63,19 @@ namespace gymlocator.Core
 
     public class DataStore
     {
-        static Uri apiEndPoint = new Uri("http://f24s-gym-api03.azurewebsites.net/v1/");
-        GymAPI api = new GymAPI(apiEndPoint, new NoClientCredentials(), new TinyCache.TinyCacheDelegationHandler());
+        static Uri apiEndPoint = new Uri("http://f24s-gym-api034.azurewebsites.net/v13/");
+        static TinyRetryDelegationHandler retryHandler = new TinyRetryDelegationHandler();
+        GymAPI api = new GymAPI(apiEndPoint, new NoClientCredentials(), retryHandler);
         private string locale = System.Globalization.CultureInfo.CurrentCulture.Name;
 
         XamarinPropertyStorage store = new XamarinPropertyStorage();
 
         public DataStore()
         {
+            
+            retryHandler.RetryOn<Exception>();
+
+
             api.BaseUri = apiEndPoint;
             store.LoadFromString(CacheResources.PreloadData.JsonData);
 
@@ -82,8 +89,11 @@ namespace gymlocator.Core
 
             TinyCache.TinyCache.SetBasePolicy(
                 new TinyCachePolicy()
-                    .SetMode(TinyCacheModeEnum.CacheFirst)
-                    .SetFetchTimeout(6000));
+                .SetMode(TinyCacheModeEnum.CacheFirst)
+                .SetFetchTimeout(TimeSpan.FromSeconds(5)) // 5 second excecution limit
+                .SetExpirationTime(TimeSpan.FromMinutes(10)) // 10 minute expiration before next fetch
+                .SetUpdateCacheTimeout(50) // Wait 50ms before trying to update cache in background
+                .UpdateHandler = async (key, newdata) => { await DoStuff(key, newdata); });
         }
 
         public async Task<IList<Gym>> GetGymsAsync()
