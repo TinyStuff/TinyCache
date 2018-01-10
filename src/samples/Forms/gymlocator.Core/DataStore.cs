@@ -93,13 +93,13 @@ namespace gymlocator.Core
                 .SetFetchTimeout(TimeSpan.FromSeconds(5)) // 5 second excecution limit
                 .SetExpirationTime(TimeSpan.FromMinutes(10)) // 10 minute expiration before next fetch
                 .SetUpdateCacheTimeout(50) // Wait 50ms before trying to update cache in background
-                .UpdateHandler = async (key, newdata) => { await DoStuff(key, newdata); });
+                );
         }
 
         public async Task<IList<Gym>> GetGymsAsync()
         {
             //var result = await api.GetGymsAsync(locale) as IList<Gym>;
-            var result = await TinyCache.TinyCache.RunAsync<List<Gym>>("gyms", () => { return api.GetGymListAsync(locale); });
+            var result = await TinyCache.TinyCache.RunAsync("gyms", () => { return api.GetGymListAsync(locale); });
             return result;
         }
     }
