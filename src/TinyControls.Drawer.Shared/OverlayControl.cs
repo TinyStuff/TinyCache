@@ -2,62 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TinyControls.Drawer;
 using Xamarin.Forms;
 
-namespace gymlocator.Controls
+namespace TinyControls
 {
-
-    public enum OverlayType
-    {
-        Top,
-        Bottom,
-        Left,
-        Right,
-        Dialog
-    }
-
-    public class ViewSizeArgs
-    {
-        public double Old { get; set; }
-        public double New { get; set; }
-    }
-
-    public class ViewOverlay
-    {
-        public ViewOverlay(View view, OverlayType type)
-        {
-            OverlayView = view;
-            Type = type;
-        }
-        public EventHandler<ViewSizeArgs> OnSizeChange;
-        public View OverlayView { get; set; }
-        public BoxView ShadowView { get; set; }
-        public OverlayType Type { get; set; }
-        public double MinSize { get; set; } = 55;
-        public double MaxSize { get; set; } = 99999;
-        public double InitialSize { get; set; }
-        public bool UseShadow { get; set; }
-        //public float SnapPercent { get; set; } = 20;
-        public bool Active { get; set; }
-        public Rectangle Bounds { get; set; }
-        public Easing Easing { get; set; } = Easing.SpringOut;
-        public bool IsHorizontal
-        {
-            get
-            {
-                return Type == OverlayType.Left || Type == OverlayType.Right;
-            }
-        }
-
-        internal double offset { get; set; }
-        internal bool active { get; set; }
-        internal double lastOffset { get; set; }
-
-    }
-
     public class OverlayControl : Layout<View>
     {
-
         public List<ViewOverlay> Overlays { get; internal set; } = new List<ViewOverlay>();
 
         protected override void OnAdded(View view)
@@ -65,23 +16,33 @@ namespace gymlocator.Controls
             base.OnAdded(view);
         }
 
+        protected override void OnChildAdded(Element child)
+        {
+            base.OnChildAdded(child);
+            if (child is ViewOverlay overlay)
+            {
+                AddOverlay(overlay);
+            }
+        }
+
         public void AddOverlay(ViewOverlay overlay)
         {
             Overlays.Add(overlay);
-            if (overlay.UseShadow)
+
+            if (overlay.ShadowView != null)
             {
-                if (overlay.ShadowView == null)
-                {
-                    overlay.ShadowView = new BoxView()
-                    {
-                        Opacity = 0,
-                        IsEnabled = false,
-                        BackgroundColor = Color.Black
-                    };
-                }
-                Children.Add(overlay.ShadowView);
+                overlay.UseShadow = true;
+                overlay.ShadowView.IsEnabled = false;
+                overlay.ShadowView.Opacity = 0;
             }
-            Children.Add(overlay.OverlayView);
+
+            // Ugly as piiip....
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Children.Add(overlay.ShadowView);
+                RaiseChild(overlay);
+            });
+
             var gest = new PanGestureRecognizer();
             gest.PanUpdated += (sender, e) =>
             {
@@ -100,25 +61,25 @@ namespace gymlocator.Controls
                 }
                 UpdateLayout(overlay);
             };
-            overlay.OverlayView.GestureRecognizers.Add(gest);
+            overlay.GestureRecognizers.Add(gest);
             ForceLayout();
         }
 
         private void UpdateLayout(ViewOverlay overlay)
         {
-            var orgSize = overlay.Bounds.Height - overlay.Bounds.Y;
+            var orgSize = overlay.OverlayBounds.Height - overlay.OverlayBounds.Y;
             var maxValue = TotalHeight;
             switch (overlay.Type)
             {
                 case OverlayType.Top:
-                    orgSize = -overlay.Bounds.Y;
+                    orgSize = -overlay.OverlayBounds.Y;
                     break;
                 case OverlayType.Left:
-                    orgSize = -overlay.Bounds.X;
+                    orgSize = -overlay.OverlayBounds.X;
                     maxValue = TotalWidth;
                     break;
                 case OverlayType.Right:
-                    orgSize = overlay.Bounds.Width - overlay.Bounds.X;
+                    orgSize = overlay.OverlayBounds.Width - overlay.OverlayBounds.X;
                     maxValue = TotalWidth;
                     break;
             }
@@ -131,17 +92,20 @@ namespace gymlocator.Controls
                 if (overlay.UseShadow)
                 {
                     overlay.ShadowView.Opacity = backgroundOpacity * 0.5f;
-                    if (overlay.OverlayView is DrawerControl dc)
+                    if (overlay is DrawerControl dc)
                     {
                         dc.BackgroundOpacity = backgroundOpacity;
                     }
                 }
-                overlay.OverlayView.Layout(GetRect(overlay, newSize, orgSize));
+                overlay.Layout(GetRect(overlay, newSize, orgSize));
             }
             else
             {
                 var delta = overlay.lastOffset - overlay.offset;
                 var absDelta = Math.Abs(delta);
+#if DEBUG
+                Console.WriteLine("Drag delta: " + delta);
+#endif
                 if (absDelta > 14)
                 {
                     newSize = (delta > 0) ? maxValue : overlay.MinSize;
@@ -152,16 +116,16 @@ namespace gymlocator.Controls
                 }
                 var rect = GetRect(overlay, newSize, orgSize);
                 backgroundOpacity = GetBackgroundOpacity(maxAllowed, newSize);
-                overlay.OverlayView.LayoutTo(rect, 300, overlay.Easing);
+                overlay.LayoutTo(rect, 300, overlay.Easing);
                 if (overlay.UseShadow)
                 {
                     overlay.ShadowView.FadeTo(backgroundOpacity * 0.5f, 300, Easing.Linear);
-                    if (overlay.OverlayView is DrawerControl dc)
+                    if (overlay is DrawerControl dc)
                     {
                         dc.BackgroundOpacity = backgroundOpacity;
                     }
                 }
-                overlay.Bounds = rect;
+                overlay.OverlayBounds = rect;
                 overlay.offset = 0;
             }
         }
@@ -198,10 +162,10 @@ namespace gymlocator.Controls
 
         private Rectangle GetRect(ViewOverlay overlay, double newSize, double oldSize = -1)
         {
-            var x = overlay.Bounds.X;
-            var y = overlay.Bounds.Y;
-            var w = overlay.Bounds.Width;
-            var h = overlay.Bounds.Height;
+            var x = overlay.OverlayBounds.X;
+            var y = overlay.OverlayBounds.Y;
+            var w = overlay.OverlayBounds.Width;
+            var h = overlay.OverlayBounds.Height;
 
             var maxValue = TotalHeight;
             if (overlay.IsHorizontal)
@@ -254,23 +218,23 @@ namespace gymlocator.Controls
             var fullRect = new Rectangle(x, y, width, height);
             foreach (var child in Children)
             {
-                if (!Overlays.Any(d => d.OverlayView == child))
+                if (!Overlays.Any(d => d == child))
                     child.Layout(fullRect);
             }
             foreach (var overlay in Overlays)
             {
-                if (overlay.Bounds.IsEmpty)
+                if (overlay.OverlayBounds.IsEmpty)
                 {
-                    overlay.Bounds = GetInitialBounds(overlay, fullRect);
+                    overlay.OverlayBounds = GetInitialBounds(overlay, fullRect);
                 }
-                overlay.OverlayView.Layout(overlay.Bounds);
+                overlay.Layout(overlay.OverlayBounds);
             }
         }
 
         private Rectangle GetInitialBounds(ViewOverlay overlay, Rectangle fullRect)
         {
             var initValue = Math.Max(overlay.MinSize, overlay.InitialSize);
-            overlay.Bounds = fullRect;
+            overlay.OverlayBounds = fullRect;
             return GetRect(overlay, initValue);
         }
 

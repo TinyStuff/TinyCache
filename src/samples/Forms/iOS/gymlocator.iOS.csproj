@@ -137,6 +137,9 @@
     <Reference Include="TinyPubSub.Forms">
       <HintPath>..\..\..\packages\tinypubsub.forms.1.2.72\lib\netstandard1.0\TinyPubSub.Forms.dll</HintPath>
     </Reference>
+    <Reference Include="TinyControls.Drawer">
+      <HintPath>..\..\..\packages\TinyControls.Drawer.1.0.0\lib\xamarinios10\TinyControls.Drawer.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -158,11 +161,10 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Renderers\CustomBoxViewRenderer.cs" />
+    <Compile Include="Renderers\CustomEntryRenderer.cs" />
     <Compile Include="Renderers\LargeTabbedPageRenderer.cs" />
     <Compile Include="Renderers\TabbedPageRenderer.cs" />
-    <Compile Include="Renderers\CustomEntryRenderer.cs" />
-    <Compile Include="Renderers\DrawerControlRenderer.cs" />
-    <Compile Include="Renderers\CustomBoxViewRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gymlocator.Core\gymlocator.Core.csproj">

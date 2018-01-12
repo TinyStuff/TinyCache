@@ -1,50 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using gymlocator.Rest.Models;
 using gymlocator.ViewModels;
+using TinyControls;
 using Xamarin.Forms;
 
 namespace gymlocator.Controls
 {
-    public partial class DrawerControl : ContentView
+    public partial class CustomDrawerControl : DrawerControl
     {
-        public DrawerControl()
+        public CustomDrawerControl()
         {
             InitializeComponent();
         }
 
-        public static readonly BindableProperty BackgroundOpacityProperty =
-            BindableProperty.Create("BackgroundOpacity", typeof(double), typeof(DrawerControl), 0.0, validateValue: IsValidOpacity);
-
-        public double BackgroundOpacity
-        {
-            get
-            {
-                return (double)GetValue(BackgroundOpacityProperty);
-            }
-            set
-            {
-                SetValue(BackgroundOpacityProperty, value);
-            }
-        }
-
-        static bool IsValidOpacity(BindableObject bindable, object value)
-        {
-            double result;
-            bool isDouble = double.TryParse(value.ToString(), out result);
-            return isDouble && (result >= 0 && result <= 1);
-        }
 
         public EventHandler<Gym> OnGymSelected;
         public EventHandler<FocusEventArgs> OnSearchFocus;
 
-        void Handle_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
+        void Handle_TextChanged(object sender, TextChangedEventArgs e)
         {
             var vm = BindingContext as GymViewModel;
             vm.FilterGyms(e.NewTextValue);
         }
 
-        void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+        void Handle_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem != null)
             {
@@ -53,7 +32,7 @@ namespace gymlocator.Controls
             }
         }
 
-        void Handle_Focused(object sender, Xamarin.Forms.FocusEventArgs e)
+        void Handle_Focused(object sender, FocusEventArgs e)
         {
             OnSearchFocus?.Invoke(sender, e);
         }
