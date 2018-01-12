@@ -2,17 +2,14 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:Controls="clr-namespace:gymlocator.Controls"
+    xmlns:tk="clr-namespace:TK.CustomMap;assembly=TK.CustomMap"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="gymlocator.Views.GymListView"
     Title="{Binding Title}">
     <ContentPage.Content>
-        <Controls:OverlayControl>
-            <StackLayout>
-                <Label
-                    Text="hoho">
-                </Label>
-            </StackLayout>
-            <Controls:DrawerControl
+        <Controls:OverlayControl x:Name="ovelayController">
+            <tk:TKCustomMap x:Name="map" />
+            <Controls:DrawerControl x:Name="sliderOverlay"
                 MinSize="65"
                 MaxSize="580"
                 InitialSize="65">

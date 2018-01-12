@@ -27,7 +27,7 @@ namespace gymlocator.Controls
 
         public EventHandler<ViewSizeArgs> OnSizeChange;
         //public View OverlayView { get; set; }
-        public BoxView ShadowView { get; set; }
+        public View ShadowView { get; set; }
         public OverlayType Type { get; set; } = OverlayType.Bottom;
         public double MinSize { get; set; } = 55;
         public double MaxSize { get; set; } = 99999;
@@ -80,6 +80,7 @@ namespace gymlocator.Controls
                 overlay.ShadowView.IsEnabled = false;
                 overlay.ShadowView.Opacity = 0;
             }
+
             // Ugly as piiip....
             Device.BeginInvokeOnMainThread(()=> {
                 Children.Add(overlay.ShadowView);

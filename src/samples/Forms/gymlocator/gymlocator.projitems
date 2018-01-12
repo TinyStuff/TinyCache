@@ -31,14 +31,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Views\GymListView.xaml.cs">
       <DependentUpon>GymListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Views\GymLocatorMain.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\GymDetailView.xaml.cs">
       <DependentUpon>GymDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\GymDetailViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\SearchBox.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Views\MapPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\OverlayControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DrawerControl.xaml.cs">
       <DependentUpon>DrawerControl.xaml</DependentUpon>

@@ -38,13 +38,13 @@ namespace gymlocator.Controls
         public EventHandler<Gym> OnGymSelected;
         public EventHandler<FocusEventArgs> OnSearchFocus;
 
-        void Handle_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
+        void Handle_TextChanged(object sender, TextChangedEventArgs e)
         {
             var vm = BindingContext as GymViewModel;
             vm.FilterGyms(e.NewTextValue);
         }
 
-        void Handle_ItemSelected(object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+        void Handle_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem != null)
             {
@@ -53,7 +53,7 @@ namespace gymlocator.Controls
             }
         }
 
-        void Handle_Focused(object sender, Xamarin.Forms.FocusEventArgs e)
+        void Handle_Focused(object sender, FocusEventArgs e)
         {
             OnSearchFocus?.Invoke(sender, e);
         }
