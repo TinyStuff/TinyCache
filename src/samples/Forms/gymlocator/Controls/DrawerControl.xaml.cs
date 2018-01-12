@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace gymlocator.Controls
 {
-    public partial class DrawerControl : ContentView
+    public partial class DrawerControl : ViewOverlay
     {
         public DrawerControl()
         {

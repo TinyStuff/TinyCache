@@ -47,11 +47,11 @@ namespace gymlocator.Views
                 BindingContext = viewModel
             };
 
-            var sliderOverlay = new ViewOverlay(slider, OverlayType.Bottom)
+            var sliderOverlay = new ViewOverlay()
             {
                 MinSize = 65,
                 MaxSize = 580,
-                UseShadow = true,
+                //UseShadow = true,
                 InitialSize = 65
             };
             keyboardOpen = false;

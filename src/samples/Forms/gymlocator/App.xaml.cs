@@ -23,7 +23,7 @@ namespace gymlocator
                 return oldMethod(locale);
             });
             Translator.Init(tempLocale);
-            MainPage = new NavigationPage(new Views.MapPage());
+            MainPage = new NavigationPage(new Views.GymListView());
         }
 
         protected override void OnStart()

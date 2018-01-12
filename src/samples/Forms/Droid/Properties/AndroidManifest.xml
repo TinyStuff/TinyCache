@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.f24s.gymlocator">
-    <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBEharfVFAFVBJW21u8GQQvYlTT_4NlmU0" />
-    <uses-sdk android:minSdkVersion="15" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.1" package="com.f24s.gymlocator" android:versionCode="2">
+	<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBEharfVFAFVBJW21u8GQQvYlTT_4NlmU0" />
+	<uses-sdk android:minSdkVersion="19" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
