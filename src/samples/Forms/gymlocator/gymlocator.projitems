@@ -37,7 +37,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\GymDetailViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\SearchBox.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Controls\OverlayControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DrawerControl.xaml.cs">
       <DependentUpon>DrawerControl.xaml</DependentUpon>
     </Compile>

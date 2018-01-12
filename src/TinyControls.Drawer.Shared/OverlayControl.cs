@@ -2,58 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TinyControls.Drawer;
 using Xamarin.Forms;
 
-namespace gymlocator.Controls
+namespace TinyControls
 {
-
-    public enum OverlayType
-    {
-        Top,
-        Bottom,
-        Left,
-        Right,
-        Dialog
-    }
-
-    public class ViewSizeArgs
-    {
-        public double Old { get; set; }
-        public double New { get; set; }
-    }
-
-    public class ViewOverlay : ContentView
-    {
-
-        public EventHandler<ViewSizeArgs> OnSizeChange;
-        //public View OverlayView { get; set; }
-        public View ShadowView { get; set; }
-        public OverlayType Type { get; set; } = OverlayType.Bottom;
-        public double MinSize { get; set; } = 55;
-        public double MaxSize { get; set; } = 99999;
-        public double InitialSize { get; set; }
-        internal bool UseShadow { get; set; }
-        //public float SnapPercent { get; set; } = 20;
-        public bool Active { get; set; }
-        internal Rectangle OverlayBounds { get; set; }
-        public Easing Easing { get; set; } = Easing.SpringOut;
-        public bool IsHorizontal
-        {
-            get
-            {
-                return Type == OverlayType.Left || Type == OverlayType.Right;
-            }
-        }
-
-        internal double offset { get; set; }
-        internal bool active { get; set; }
-        internal double lastOffset { get; set; }
-
-    }
-
     public class OverlayControl : Layout<View>
     {
-
         public List<ViewOverlay> Overlays { get; internal set; } = new List<ViewOverlay>();
 
         protected override void OnAdded(View view)
@@ -82,7 +37,8 @@ namespace gymlocator.Controls
             }
 
             // Ugly as piiip....
-            Device.BeginInvokeOnMainThread(()=> {
+            Device.BeginInvokeOnMainThread(() =>
+            {
                 Children.Add(overlay.ShadowView);
                 RaiseChild(overlay);
             });

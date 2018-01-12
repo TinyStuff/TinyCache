@@ -44,7 +44,7 @@ namespace gymlocator.Views
                 keyboardOpen = true;
                 ovelayController.MaximizeOverlay(sliderOverlay);
             };
-
+            SetupLocation();
         }
 
         private void HideKeyboard()

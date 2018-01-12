@@ -2,22 +2,26 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:Controls="clr-namespace:gymlocator.Controls"
+    xmlns:TinyControls="clr-namespace:TinyControls;assembly=TinyControls.Drawer"
     xmlns:tk="clr-namespace:TK.CustomMap;assembly=TK.CustomMap"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="gymlocator.Views.GymListView"
     Title="{Binding Title}">
     <ContentPage.Content>
-        <Controls:OverlayControl x:Name="ovelayController">
-            <tk:TKCustomMap x:Name="map" />
-            <Controls:DrawerControl x:Name="sliderOverlay"
+        <TinyControls:OverlayControl
+            x:Name="ovelayController">
+            <tk:TKCustomMap
+                x:Name="map" />
+            <Controls:CustomDrawerControl
+                x:Name="sliderOverlay"
                 MinSize="65"
                 MaxSize="580"
                 InitialSize="65">
-                <Controls:ViewOverlay.ShadowView>
+                <TinyControls:ViewOverlay.ShadowView>
                     <BoxView
                         BackgroundColor="Black" />
-                </Controls:ViewOverlay.ShadowView>
-            </Controls:DrawerControl>
-        </Controls:OverlayControl>
+                </TinyControls:ViewOverlay.ShadowView>
+            </Controls:CustomDrawerControl>
+        </TinyControls:OverlayControl>
     </ContentPage.Content>
 </ContentPage>

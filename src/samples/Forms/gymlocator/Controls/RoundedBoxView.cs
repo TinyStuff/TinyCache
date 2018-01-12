@@ -6,7 +6,7 @@ namespace gymlocator.Controls
     public class RoundedBoxView : BoxView
     {
         public static readonly BindableProperty CornerRadiusProperty =
-            BindableProperty.Create("CornerRadius", typeof(float), typeof(DrawerControl), 0.0f, validateValue: IsValidRadius);
+            BindableProperty.Create("CornerRadius", typeof(float), typeof(RoundedBoxView), 0.0f, validateValue: IsValidRadius);
 
         public float CornerRadius
         {

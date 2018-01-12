@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Controls:ViewOverlay
+<TinyControls:DrawerControl
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:TinyControls="clr-namespace:TinyControls;assembly=TinyControls.Drawer"
     BackgroundColor="Transparent"
     xmlns:Controls="clr-namespace:gymlocator.Controls"
     xmlns:Tr="clr-namespace:TinyTranslations.Forms;assembly=TinyTranslations.Forms"
-    x:Class="gymlocator.Controls.DrawerControl">
+    x:Class="gymlocator.Controls.CustomDrawerControl">
     <ContentView.Content>
         <StackLayout
             BackgroundColor="#22ffffff"
@@ -77,4 +78,4 @@
             </ListView>
         </StackLayout>
     </ContentView.Content>
-</Controls:ViewOverlay>
+</TinyControls:DrawerControl>
