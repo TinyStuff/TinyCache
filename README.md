@@ -30,7 +30,7 @@ TinyCache.TinyCache.SetCacheStore(store);
 
 // Fetch data with default policy
 var result = await TinyCache.TinyCache.RunAsync<List<Data>>("cachekey", () => { return api.GetData("customdata"); });
-
+```
 
 ### Use property storage in Xamarin.Forms
 Install NuGet package TinyCache.Forms.
