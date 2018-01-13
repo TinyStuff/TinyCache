@@ -2,16 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
- <Description />
+    <Description>Small helper for offline and caching of long-running processes</Description>
     <PackageLicenseUrl>https://github.com/matst80/tinycache/LICENSE</PackageLicenseUrl>
     <RepositoryType>Git</RepositoryType>
-    <RepositoryUrl>https://github.com/matst80/tinycache</RepositoryUrl>
+    <RepositoryUrl>https://github.com/TinyStuff/TinyCache</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/TinyStuff/TinyCache</PackageProjectUrl>
     <Company />
     <Product>TinyCache.FileStorage</Product>
     <Authors>Mats Törnberg</Authors>
     <Version>1.0.0</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Copyright>Copyright 2017</Copyright>
+    <PackageIconUrl>https://i.imgur.com/rsc2LTX.png</PackageIconUrl>
   </PropertyGroup>
 
 
