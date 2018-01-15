@@ -70,6 +70,11 @@ namespace TinyCacheLib.FileStorage
 
         private string GetPath(string key)
         {
+            if(!string.IsNullOrWhiteSpace((cacheFolder)))
+            {
+                throw new Exception("Initialize has to be called before using TinyCache with file storage");
+            }
+
             var encoded = WebUtility.UrlEncode(key);
 
             var name = string.Format("TinyCache_{0}.cache", encoded);
