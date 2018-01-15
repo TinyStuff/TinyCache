@@ -72,7 +72,9 @@ namespace TinyCache.FileStorage
         {
             var encoded = WebUtility.UrlEncode(key);
 
-            return string.Format("TinyCache_{0}.cache", encoded);
+            var name = string.Format("TinyCache_{0}.cache", encoded);
+
+            return Path.Combine(cacheFolder,name);
         }
     }
 }
