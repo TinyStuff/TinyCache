@@ -70,7 +70,7 @@ namespace TinyCacheLib.FileStorage
 
         private string GetPath(string key)
         {
-            if(!string.IsNullOrWhiteSpace((cacheFolder)))
+            if(string.IsNullOrWhiteSpace((cacheFolder)))
             {
                 throw new Exception("Initialize has to be called before using TinyCache with file storage");
             }
