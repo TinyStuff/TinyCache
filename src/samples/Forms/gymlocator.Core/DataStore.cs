@@ -6,7 +6,7 @@ using gymlocator.Core.Shopping.Models;
 using gymlocator.Rest;
 using gymlocator.Rest.Models;
 using Microsoft.Rest;
-using TinyCache;
+using TinyCacheLib;
 
 namespace gymlocator.Core
 {
@@ -29,7 +29,7 @@ namespace gymlocator.Core
 
         public async Task<IList<ShoppingList>> GetShoppingLists()
         {
-            var data = await TinyCache.TinyCache.RunAsync<IList<ShoppingList>>("shoppingLists1", async () => {
+            var data = await TinyCache.RunAsync<IList<ShoppingList>>("shoppingLists1", async () => {
                 var ret = await _client.GetShoppingListsAsync();
                 return ret;
             });
@@ -48,7 +48,7 @@ namespace gymlocator.Core
 
         public async Task<IList<Item>> GetListItems(int listId)
         {
-            var data = await TinyCache.TinyCache.RunAsync("listItems" + listId, async () => {
+            var data = await TinyCache.RunAsync("listItems" + listId, async () => {
                 var ret = await _client.GetListItemsAsync(listId);
                 return ret;
             });
@@ -81,13 +81,13 @@ namespace gymlocator.Core
 
             var preloadString = store.GetAllAsLoadableString();
 
-            TinyCache.TinyCache.SetCacheStore(store);
-            TinyCache.TinyCache.OnError += (sender, e) =>
+            TinyCache.SetCacheStore(store);
+            TinyCache.OnError += (sender, e) =>
             {
                 var i = 3;
             };
 
-            TinyCache.TinyCache.SetBasePolicy(
+            TinyCache.SetBasePolicy(
                 new TinyCachePolicy()
                 .SetMode(TinyCacheModeEnum.CacheFirst)
                 .SetFetchTimeout(TimeSpan.FromSeconds(5)) // 5 second excecution limit
@@ -99,7 +99,7 @@ namespace gymlocator.Core
         public async Task<IList<Gym>> GetGymsAsync()
         {
             //var result = await api.GetGymsAsync(locale) as IList<Gym>;
-            var result = await TinyCache.TinyCache.RunAsync("gyms", () => { return api.GetGymListAsync(locale); });
+            var result = await TinyCache.RunAsync("gyms", () => { return api.GetGymListAsync(locale); });
             return result;
         }
     }

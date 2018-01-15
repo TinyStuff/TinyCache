@@ -1,4 +1,4 @@
-﻿namespace TinyCache
+﻿namespace TinyCacheLib
 {
     public interface IPreloadableCache : ICacheStorage
     {

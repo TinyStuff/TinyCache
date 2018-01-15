@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using TinyCacheLib;
 using TinyTranslations;
 using TinyTranslations.Forms;
 using Xamarin.Forms;
@@ -18,7 +19,7 @@ namespace gymlocator
             var tempLocale = "es";
             ansExtension.Translator = Translator;
             var oldMethod = Translator.FetchLanguageMethod;
-            Translator.FetchLanguageMethod = async (locale) => await TinyCache.TinyCache.RunAsync<TranslationDictionary>("trans-"+tempLocale, () =>
+            Translator.FetchLanguageMethod = async (locale) => await TinyCache.RunAsync<TranslationDictionary>("trans-"+tempLocale, () =>
             {
                 return oldMethod(locale);
             });
