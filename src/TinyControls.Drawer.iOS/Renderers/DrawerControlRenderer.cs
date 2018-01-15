@@ -1,15 +1,14 @@
-﻿using System;
-using CoreAnimation;
+﻿using CoreAnimation;
 using CoreGraphics;
-using gymlocator.Controls;
-using gymlocator.iOS.Renderers;
+using TinyControls;
+using TinyControls.Drawer.iOS.Renderers;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
 [assembly: ExportRenderer(typeof(DrawerControl), typeof(DrawerControlRenderer))]
 
-namespace gymlocator.iOS.Renderers
+namespace TinyControls.Drawer.iOS.Renderers
 {
     public class DrawerControlRenderer : ViewRenderer<DrawerControl, UIControl>
     {

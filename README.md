@@ -30,7 +30,7 @@ TinyCache.TinyCache.SetCacheStore(store);
 
 // Fetch data with default policy
 var result = await TinyCache.TinyCache.RunAsync<List<Data>>("cachekey", () => { return api.GetData("customdata"); });
-
+```
 
 ### Use property storage in Xamarin.Forms
 Install NuGet package TinyCache.Forms.
@@ -63,9 +63,12 @@ TinyCache.TinyCache.OnError += (sender, e) =>
 // Set a base policy that will be used when no policy is specified
 TinyCache.TinyCache.SetBasePolicy(
     new TinyCachePolicy()
-        .SetMode(TinyCacheModeEnum.CacheFirst)
-        .SetFetchTimeout(6000));
-        
+        .SetMode(TinyCacheModeEnum.CacheFirst) // fetch from cache first
+        .SetFetchTimeout(TimeSpan.FromSeconds(5)) // 5 second excecution limit
+        .SetExpirationTime(TimeSpan.FromMinutes(10)) // 10 minute expiration before next fetch
+        .SetUpdateCacheTimeout(50) // Wait 50ms before trying to update cache in background
+        .UpdateHandler = async (key, newdata) => { await DoStuff(key, newdata); }); // Handle background updates 
+
 // Handle background changes
 TinyCache.TinyCache.OnUpdate += async (object sender, CacheUpdatedEvt e) => {
     var cacheKey = e.Key;

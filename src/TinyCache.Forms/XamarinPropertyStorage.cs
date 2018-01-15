@@ -26,6 +26,8 @@ namespace TinyCache
             return null;
         }
 
+        private Object thisLock = new Object(); 
+
         public bool Store(string key, object value)
         {
             var ret = true;
@@ -39,18 +41,21 @@ namespace TinyCache
 
             if (AppStorage != null && !string.IsNullOrEmpty(stringValue))
             {
-                if (AppStorage.ContainsKey(key))
+                lock (thisLock)
                 {
-                    if (AppStorage[key] as string != stringValue)
+                    if (AppStorage.ContainsKey(key))
                     {
-                        AppStorage[key] = stringValue;
-                        ret = false;
+                        if (AppStorage[key] as string != stringValue)
+                        {
+                            AppStorage[key] = stringValue;
+                            ret = false;
+                        }
                     }
-                }
-                else
-                {
-                    AppStorage.Add(key, stringValue);
-                    ret = true;
+                    else
+                    {
+                        AppStorage.Add(key, stringValue);
+                        ret = true;
+                    }
                 }
             }
 

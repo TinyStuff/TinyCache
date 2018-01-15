@@ -24,14 +24,14 @@ namespace TinyCache
         /// <param name="task">Task to run.</param>
         /// <param name="timeout">Timeout in milliseconds</param>
         /// <typeparam name="TResult">Type of result when running function</typeparam>
-        public static async Task<TResult> TimeoutAfter<TResult>(Func<Task<TResult>> task, int timeout)
+        public static async Task<TResult> TimeoutAfter<TResult>(Func<Task<TResult>> task, double timeout)
         {
             OnLoadingChange?.Invoke(task, true);
 
             using (var timeoutCancellationTokenSource = new CancellationTokenSource())
             {
                 var tsk = task();
-                var completedTask = await Task.WhenAny(tsk, Task.Delay(timeout, timeoutCancellationTokenSource.Token));
+                var completedTask = await Task.WhenAny(tsk, Task.Delay((int)timeout, timeoutCancellationTokenSource.Token));
                 if (completedTask == tsk)
                 {
                     OnLoadingChange?.Invoke(task, false);
@@ -79,7 +79,8 @@ namespace TinyCache
         {
             var ttype = typeof(T);
             object ret = Storage.Get(key, ttype);
-            if (ret==null && SecondaryStorage!=null){
+            if (ret == null && SecondaryStorage != null)
+            {
                 ret = SecondaryStorage.Get(key, ttype);
             }
             if (policy == null)
@@ -95,12 +96,13 @@ namespace TinyCache
                     if (realFetch != null)
                     {
                         ret = realFetch;
-                        Store(key, realFetch);
+                        Store(key, realFetch, policy);
                     }
                 }
                 catch (Exception ex)
                 {
                     OnError?.Invoke(policy, ex);
+                    policy.ExceptionHandler?.Invoke(ex, true);
                 }
             }
 
@@ -111,10 +113,6 @@ namespace TinyCache
                 return default(T);
             }
 
-            if (ttype == typeof(object))
-            {
-                return (T)ret;
-            }
             return (T)ret;
         }
 
@@ -168,17 +166,20 @@ namespace TinyCache
                 if (ShouldFetch(policy.UpdateCacheTimeout, key))
                 {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    Task.Delay(policy.UpdateCacheTimeout).ContinueWith(async (arg) =>
+                    Task.Delay((int)policy.UpdateCacheTimeout).ContinueWith(async (arg) =>
                     {
                         try
                         {
                             var newvalue = await TimeoutAfter<T>(func, policy.BackgroundFetchTimeout);
-                            Store(key, newvalue);
+                            Store(key, newvalue, policy);
                         }
                         catch (Exception ex)
                         {
                             if (policy.ReportExceptionsOnBackgroundFetch)
+                            {
                                 OnError?.Invoke(policy, ex);
+                                policy.ExceptionHandler?.Invoke(ex, true);
+                            }
                         }
                     });
                 }
@@ -186,19 +187,23 @@ namespace TinyCache
             }
         }
 
+        private static Object thisLock = new Object();
         private static void AddLastFetch(string key)
         {
-            if (lastFetch.ContainsKey(key))
+            lock (thisLock)
             {
-                lastFetch[key] = DateTime.Now;
-            }
-            else
-            {
-                lastFetch.Add(key, DateTime.Now);
+                if (lastFetch.ContainsKey(key))
+                {
+                    lastFetch[key] = DateTime.Now;
+                }
+                else
+                {
+                    lastFetch.Add(key, DateTime.Now);
+                }
             }
         }
 
-        private static bool ShouldFetch(int v, string key)
+        private static bool ShouldFetch(double v, string key)
         {
             if (!lastFetch.ContainsKey(key))
             {
@@ -206,10 +211,10 @@ namespace TinyCache
             }
 
             var timeDiff = (DateTime.Now - lastFetch[key]).TotalMilliseconds;
-            return (timeDiff > (v * 10));
+            return (timeDiff > v);
         }
 
-        private static void Store(string key, object val)
+        private static void Store(string key, object val, TinyCachePolicy policy)
         {
             if (val != null)
             {
@@ -221,9 +226,10 @@ namespace TinyCache
                     {
                         Task.Delay(10).ContinueWith((a) =>
                         {
-                            SecondaryStorage.Store(key,val);
+                            SecondaryStorage.Store(key, val);
                         });
                     }
+                    policy?.UpdateHandler?.Invoke(key, val);
                     OnUpdate?.Invoke(val, new CacheUpdatedEvt() { Key = key, Value = val });
                 }
             }

@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:Controls="clr-namespace:gymlocator.Controls"
+    xmlns:TinyControls="clr-namespace:TinyControls;assembly=TinyControls.Drawer"
+    xmlns:tk="clr-namespace:TK.CustomMap;assembly=TK.CustomMap"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="gymlocator.Views.GymListView"
     Title="{Binding Title}">
     <ContentPage.Content>
-        <ListView
-            ItemsSource="{Binding Gyms}"
-            ItemTapped="Handle_ItemTapped"
-            >
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid
-                            Padding="10,5">
-                            <Label
-                                Text="{Binding Name}" />
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <TinyControls:OverlayControl
+            x:Name="ovelayController">
+            <tk:TKCustomMap
+                x:Name="map" />
+            <Controls:CustomDrawerControl
+                x:Name="sliderOverlay"
+                MinSize="65"
+                MaxSize="580"
+                InitialSize="65">
+                <TinyControls:ViewOverlay.ShadowView>
+                    <BoxView
+                        BackgroundColor="Black" />
+                </TinyControls:ViewOverlay.ShadowView>
+            </Controls:CustomDrawerControl>
+        </TinyControls:OverlayControl>
     </ContentPage.Content>
 </ContentPage>
