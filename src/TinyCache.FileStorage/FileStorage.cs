@@ -4,7 +4,7 @@ using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace TinyCache.FileStorage
+namespace TinyCacheLib.FileStorage
 {
     public class FileStorage : ICacheStorage
     {

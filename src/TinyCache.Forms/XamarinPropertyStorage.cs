@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 
-namespace TinyCache
+namespace TinyCacheLib
 {
     public class XamarinPropertyStorage : IPreloadableCache
     {

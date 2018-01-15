@@ -1,5 +1,5 @@
 ﻿using System;
-namespace TinyCache.Forms
+namespace TinyCacheLib.Forms
 {
     public static class PreloadExtensions
     {

@@ -12,6 +12,7 @@
     <Version>1.0.0</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Copyright>Copyright 2017</Copyright>
+    <RootNamespace>TinyCacheLib</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
