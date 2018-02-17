@@ -29,7 +29,7 @@ namespace gymlocator.Core
 
         public async Task<IList<ShoppingList>> GetShoppingLists()
         {
-            var data = await TinyCache.RunAsync<IList<ShoppingList>>("shoppingLists1", async () => {
+            var data = await TinyCache.RunAsync<IList<ShoppingList>>("shoppingLists10", async () => {
                 var ret = await _client.GetShoppingListsAsync();
                 return ret;
             });

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace TinyCacheLib
 {
+
     public static class TinyCache
     {
         private static TinyCachePolicy defaultPolicy = new TinyCachePolicy();
@@ -41,6 +42,20 @@ namespace TinyCacheLib
 
                 OnLoadingChange?.Invoke(task, false);
                 throw new TimeoutException("The operation has timed out.");
+            }
+        }
+
+        public static void Store(string key, object data)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException(nameof(key));
+            if (data != null)
+            {
+                Storage.Store(key, data);
+                if (SecondaryStorage != null)
+                {
+                    SecondaryStorage.Store(key, data);
+                }
             }
         }
 

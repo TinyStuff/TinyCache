@@ -24,6 +24,7 @@ namespace gymlocator
                 return oldMethod(locale);
             });
             Translator.Init(tempLocale);
+           
             MainPage = new NavigationPage(new Views.GymListView());
         }
 
