@@ -90,7 +90,7 @@ namespace TinyCacheLib
         /// <param name="func">Function for populating cache</param>
         /// <param name="policy">Policy.</param>
         /// <typeparam name="T">Return type of function and cache object.</typeparam>
-        public static async Task<T> RunAsync<T>(string key, Func<Task<T>> func, TinyCachePolicy policy = null)
+        public static async Task<T> RunAsync<T>(string key, Func<Task<T>> func, TinyCachePolicy policy = null, Action<T> onUpdate = null)
         {
             var ttype = typeof(T);
             object ret = Storage.Get(key, ttype);
@@ -121,7 +121,7 @@ namespace TinyCacheLib
                 }
             }
 
-            StartBackgroundFetch(key, func, policy);
+            StartBackgroundFetch(key, func, policy, onUpdate);
 
             if (ret == null)
             {
@@ -174,7 +174,7 @@ namespace TinyCacheLib
             });
         }
 
-        private static void StartBackgroundFetch<T>(string key, Func<Task<T>> func, TinyCachePolicy policy)
+        private static void StartBackgroundFetch<T>(string key, Func<Task<T>> func, TinyCachePolicy policy, Action<T> onUpdate)
         {
             if (policy.UpdateCacheTimeout > 0)
             {
@@ -186,6 +186,7 @@ namespace TinyCacheLib
                         try
                         {
                             var newvalue = await TimeoutAfter<T>(func, policy.BackgroundFetchTimeout);
+                            onUpdate?.Invoke(newvalue);
                             Store(key, newvalue, policy);
                         }
                         catch (Exception ex)

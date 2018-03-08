@@ -33,6 +33,8 @@ Project("{5DD5E4FA-CB73-4610-85AB-557B54E96AA9}") = "TinyControls.Drawer.NuGet",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TinyControls", "TinyControls", "{33786693-2C29-4A40-8E5D-60AC6A0E68A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyCache.BlobCache", "TinyCache.BlobCache\TinyCache.BlobCache.csproj", "{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -175,6 +177,18 @@ Global
 		{B45DDBCA-709E-4AE1-9554-53A74469E773}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B45DDBCA-709E-4AE1-9554-53A74469E773}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B45DDBCA-709E-4AE1-9554-53A74469E773}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}.Release|iPhone.Build.0 = Release|Any CPU
+		{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E28F75B-2CE2-47CB-8693-6DC8F6F6A1CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{94889B01-47F7-4F8E-A618-B561EE1D18ED} = {F8948DAD-1D08-450B-BC11-49F2022E31A7}
