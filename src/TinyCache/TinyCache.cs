@@ -89,6 +89,7 @@ namespace TinyCacheLib
         /// <param name="key">Cache key.</param>
         /// <param name="func">Function for populating cache</param>
         /// <param name="policy">Policy.</param>
+        /// <param name="onUpdate">Method to call when data is updated in the background.</param>
         /// <typeparam name="T">Return type of function and cache object.</typeparam>
         public static async Task<T> RunAsync<T>(string key, Func<Task<T>> func, TinyCachePolicy policy = null, Action<T> onUpdate = null)
         {
