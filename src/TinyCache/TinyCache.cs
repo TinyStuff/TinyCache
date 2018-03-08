@@ -102,25 +102,26 @@ namespace TinyCacheLib
             {
                 policy = defaultPolicy;
             }
-
-            if (policy.Mode == TinyCacheModeEnum.FetchFirst || ret == null)
+            if (policy.UseCacheFirstFunction == null || !policy.UseCacheFirstFunction())
             {
-                try
+                if (policy.Mode == TinyCacheModeEnum.FetchFirst || ret == null)
                 {
-                    var realFetch = await TimeoutAfter<T>(func, policy.FetchTimeout);
-                    if (realFetch != null)
+                    try
                     {
-                        ret = realFetch;
-                        Store(key, realFetch, policy);
+                        var realFetch = await TimeoutAfter<T>(func, policy.FetchTimeout);
+                        if (realFetch != null)
+                        {
+                            ret = realFetch;
+                            Store(key, realFetch, policy);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OnError?.Invoke(policy, ex);
+                        policy.ExceptionHandler?.Invoke(ex, true);
                     }
                 }
-                catch (Exception ex)
-                {
-                    OnError?.Invoke(policy, ex);
-                    policy.ExceptionHandler?.Invoke(ex, true);
-                }
             }
-
             StartBackgroundFetch(key, func, policy, onUpdate);
 
             if (ret == null)

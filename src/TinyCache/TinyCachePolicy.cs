@@ -12,6 +12,8 @@ namespace TinyCacheLib
         public double BackgroundFetchTimeout { get; set; } = 20000;
         public bool ReportExceptionsOnBackgroundFetch { get; set; }
 
+        public Func<bool> UseCacheFirstFunction { get; set; }
+
         public Action<Exception, bool> ExceptionHandler { get; set; }
         public Action<string, object> UpdateHandler { get; set; }
 
