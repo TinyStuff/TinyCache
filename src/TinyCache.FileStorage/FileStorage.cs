@@ -41,13 +41,18 @@ namespace TinyCacheLib.FileStorage
             }
         }
 
+        public static object lockObj = 1;
+
         public bool Store(string key, object value)
         {
             var hasChanged = true;
 
             var path = GetPath(key);
-
-            var json = JsonConvert.SerializeObject(value);
+            string json = null;
+            lock (lockObj)
+            {
+                json = JsonConvert.SerializeObject(value);
+            }
 
             if(File.Exists(path))
             {
@@ -61,7 +66,6 @@ namespace TinyCacheLib.FileStorage
 
             if (hasChanged)
             {
- 
                 File.WriteAllText(path, json, Encoding.UTF8);
             }
 
