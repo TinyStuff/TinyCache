@@ -122,12 +122,9 @@ namespace TinyCacheLib
                         policy.ExceptionHandler?.Invoke(ex, true);
                     }
                 }
-                else {
-                    AddLastFetch(key);
-                }
             }
             StartBackgroundFetch(key, func, policy, onUpdate);
-
+            AddLastFetch(key);
             if (ret == null)
             {
                 return default(T);
