@@ -137,9 +137,6 @@
     <Reference Include="TinyPubSub.Forms">
       <HintPath>..\..\..\packages\tinypubsub.forms.1.2.72\lib\netstandard1.0\TinyPubSub.Forms.dll</HintPath>
     </Reference>
-    <Reference Include="TinyControls.Drawer">
-      <HintPath>..\..\..\packages\TinyControls.Drawer.1.0.0\lib\xamarinios10\TinyControls.Drawer.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -186,6 +183,10 @@
     <ProjectReference Include="..\..\..\TinyTranslatons\TinyTranslations.csproj">
       <Project>{399C3D72-15B5-4FB2-BD8E-B46CC2D67EE9}</Project>
       <Name>TinyTranslations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\TinyControls.Drawer.iOS\TinyControls.Drawer.iOS.csproj">
+      <Project>{95B3D2D0-737F-4080-8563-825EFA7E27EF}</Project>
+      <Name>TinyControls.Drawer.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

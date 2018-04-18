@@ -34,14 +34,19 @@ namespace TinyControls
                 overlay.UseShadow = true;
                 overlay.ShadowView.IsEnabled = false;
                 overlay.ShadowView.Opacity = 0;
+
+                // Ugly as piiip....
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    if (overlay.ShadowView != null)
+                    {
+                        Children.Add(overlay.ShadowView);
+                        RaiseChild(overlay);
+                    }
+                });
             }
 
-            // Ugly as piiip....
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                Children.Add(overlay.ShadowView);
-                RaiseChild(overlay);
-            });
+
 
             var gest = new PanGestureRecognizer();
             gest.PanUpdated += (sender, e) =>

@@ -50,7 +50,8 @@ namespace TinyControls.Drawer.iOS.Renderers
         private void UpdateBackgroundColor()
         {
             if (Element is DrawerControl dc) {
-                var clr = UIColor.FromWhiteAlpha(1, (float)dc.BackgroundOpacity);
+                var clr = dc.BackgroundColor.ToUIColor().ColorWithAlpha((float)dc.BackgroundOpacity);
+                //var clr = UIColor.FromWhiteAlpha(1, (float)dc.BackgroundOpacity);
                 Layer.BackgroundColor = clr.CGColor;
             }
         }

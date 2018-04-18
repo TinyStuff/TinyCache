@@ -15,12 +15,13 @@
             <Controls:CustomDrawerControl
                 x:Name="sliderOverlay"
                 MinSize="65"
+                BackgroundColor="Fuchsia"
                 MaxSize="580"
                 InitialSize="65">
-                <TinyControls:ViewOverlay.ShadowView>
+                <!--<TinyControls:ViewOverlay.ShadowView>
                     <BoxView
                         BackgroundColor="Black" />
-                </TinyControls:ViewOverlay.ShadowView>
+                </TinyControls:ViewOverlay.ShadowView>-->
             </Controls:CustomDrawerControl>
         </TinyControls:OverlayControl>
     </ContentPage.Content>
