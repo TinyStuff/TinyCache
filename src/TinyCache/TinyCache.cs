@@ -67,18 +67,14 @@ namespace TinyCacheLib
         /// <typeparam name="T">Type of the stored data.</typeparam>
         public static T GetFromStorage<T>(string key)
         {
-            object ret = Storage.Get(key, typeof(T));
+            var genericType = typeof(T);
+            object ret = Storage.Get(key, genericType);
             if (ret == null && SecondaryStorage != null)
             {
-                ret = SecondaryStorage.Get(key, typeof(T));
+                ret = SecondaryStorage.Get(key, genericType);
                 if (ret != null)
                     Storage.Store(key, ret);
             }
-            if (typeof(T) == typeof(object))
-            {
-                return (T)ret;
-            }
-
             return (T)ret;
         }
 
@@ -93,24 +89,22 @@ namespace TinyCacheLib
         /// <typeparam name="T">Return type of function and cache object.</typeparam>
         public static async Task<T> RunAsync<T>(string key, Func<Task<T>> func, TinyCachePolicy policy = null, Action<T> onUpdate = null)
         {
-            var ttype = typeof(T);
-            object ret = Storage.Get(key, ttype);
+            var genericType = typeof(T);
+            object ret = Storage.Get(key, genericType);
             if (ret == null && SecondaryStorage != null)
             {
-                ret = SecondaryStorage.Get(key, ttype);
+                ret = SecondaryStorage.Get(key, genericType);
             }
-            if (policy == null)
-            {
-                policy = defaultPolicy;
-            }
+            policy = policy ?? defaultPolicy;
+
             if (policy.UseCacheFirstFunction == null || !policy.UseCacheFirstFunction())
             {
                 if (policy.Mode == TinyCacheModeEnum.FetchFirst || ret == null)
                 {
                     try
                     {
-                        var realFetch = await TimeoutAfter<T>(func, policy.FetchTimeout);
-                        if (realFetch != null)
+                        var realFetch = await TimeoutAfter(func, policy.FetchTimeout);
+                        if (!(realFetch is T))
                         {
                             ret = realFetch;
                             Store(key, realFetch, policy);
@@ -125,12 +119,7 @@ namespace TinyCacheLib
             }
             StartBackgroundFetch(key, func, policy, onUpdate);
             AddLastFetch(key);
-            if (ret == null)
-            {
-                return default(T);
-            }
-
-            return (T)ret;
+            return (ret == null) ? default(T) : (T)ret;
         }
 
         /// <summary>
@@ -248,7 +237,7 @@ namespace TinyCacheLib
                         });
                     }
                     policy?.UpdateHandler?.Invoke(key, val);
-                    OnUpdate?.Invoke(val, new CacheUpdatedEvt() { Key = key, Value = val });
+                    OnUpdate?.Invoke(val, new CacheUpdatedEvt(key, val));
                 }
             }
         }

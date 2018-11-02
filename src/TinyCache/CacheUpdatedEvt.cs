@@ -2,11 +2,15 @@
 {
     public class CacheUpdatedEvt
     {
-        public string Key
+        public CacheUpdatedEvt() { }
+
+        public CacheUpdatedEvt(string key, object value)
         {
-            get;
-            set;
+            Key = key;
+            Value = value; 
         }
+
+        public string Key { get; set; }
 
         public object Value { get; set; }
     }

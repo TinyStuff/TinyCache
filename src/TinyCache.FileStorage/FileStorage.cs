@@ -19,15 +19,21 @@ namespace TinyCacheLib.FileStorage
         {
             var path = GetPath(key);
 
-            if(File.Exists(path))
+            try
             {
-                var json = File.ReadAllText(path);
+                if (File.Exists(path))
+                {
+                    var json = File.ReadAllText(path);
 
-                var result = JsonConvert.DeserializeObject(json, t);
+                    var result = JsonConvert.DeserializeObject(json, t);
 
-                return result;
+                    return result;
+                }
             }
-
+            catch(Exception ex)
+            {
+                return null;
+            }
             return null;
         }
 
@@ -56,17 +62,31 @@ namespace TinyCacheLib.FileStorage
 
             if(File.Exists(path))
             {
-                var content = File.ReadAllText(path);
-
-                if(content == json)
+                try
                 {
-                    hasChanged = false;
+                    var content = File.ReadAllText(path);
+
+                    if (content == json)
+                    {
+                        hasChanged = false;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    return false;
                 }
             }
 
             if (hasChanged)
             {
-                File.WriteAllText(path, json, Encoding.UTF8);
+                try
+                {
+                    File.WriteAllText(path, json, Encoding.UTF8);
+                }
+                catch(Exception ex)
+                {
+                    return false;
+                }
             }
 
             return hasChanged;

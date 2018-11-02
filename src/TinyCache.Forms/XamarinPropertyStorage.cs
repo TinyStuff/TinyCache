@@ -7,17 +7,11 @@ namespace TinyCacheLib
 {
     public class XamarinPropertyStorage : IPreloadableCache
     {
-        private IDictionary<string, object> AppStorage
-        {
-            get
-            {
-                return Application.Current.Properties;
-            }
-        }
+        private IDictionary<string, object> AppStorage => Application.Current.Properties;
 
         public object Get(string key, Type t)
         {
-            if (AppStorage != null && AppStorage.ContainsKey(key))
+            if (AppStorage.ContainsKey(key))
             {
                 var stringValue = AppStorage[key] as string;
                 return JsonConvert.DeserializeObject(stringValue, t);
@@ -26,42 +20,38 @@ namespace TinyCacheLib
             return null;
         }
 
-        private Object thisLock = new Object(); 
+        private object thisLock = new Object(); 
 
         public bool Store(string key, object value)
         {
-            var ret = true;
-
             if (value == null)
-            {
-                ret = false;
-            }
+                return false;
 
             var stringValue = JsonConvert.SerializeObject(value);
+            var ret = false;
 
             if (AppStorage != null && !string.IsNullOrEmpty(stringValue))
             {
                 lock (thisLock)
                 {
+                    var hasChanged = false;
                     if (AppStorage.ContainsKey(key))
                     {
                         if (AppStorage[key] as string != stringValue)
                         {
                             AppStorage[key] = stringValue;
-                            ret = false;
+                            hasChanged = true;
                         }
                     }
                     else
                     {
                         AppStorage.Add(key, stringValue);
                         ret = true;
+                        hasChanged = true;
                     }
+                    if (hasChanged)
+                        Application.Current.SavePropertiesAsync();
                 }
-            }
-
-            if (ret)
-            {
-                Application.Current.SavePropertiesAsync();
             }
 
             return ret;
