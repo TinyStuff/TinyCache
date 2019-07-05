@@ -22,13 +22,20 @@ namespace TinyCacheLib
 
         private object thisLock = new Object(); 
 
-        public bool Store(string key, object value)
+        public bool Store(string key, object value, bool checkChange = true)
         {
             if (value == null)
                 return false;
 
             var stringValue = JsonConvert.SerializeObject(value);
             var ret = false;
+
+            if (!checkChange)
+            {
+                AppStorage[key] = stringValue;
+                return true;
+            }
+            
 
             if (AppStorage != null && !string.IsNullOrEmpty(stringValue))
             {

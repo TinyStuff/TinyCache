@@ -30,7 +30,7 @@ namespace TinyCacheLib.FileStorage
                     return result;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return null;
             }
@@ -41,7 +41,7 @@ namespace TinyCacheLib.FileStorage
         {
             var path = GetPath(key);
 
-            if(File.Exists(path))
+            if (File.Exists(path))
             {
                 File.Delete(path);
             }
@@ -49,7 +49,7 @@ namespace TinyCacheLib.FileStorage
 
         public static object lockObj = 1;
 
-        public bool Store(string key, object value)
+        public bool Store(string key, object value, bool checkChange = true)
         {
             var hasChanged = true;
 
@@ -60,7 +60,7 @@ namespace TinyCacheLib.FileStorage
                 json = JsonConvert.SerializeObject(value);
             }
 
-            if(File.Exists(path))
+            if (File.Exists(path))
             {
                 try
                 {
@@ -71,7 +71,7 @@ namespace TinyCacheLib.FileStorage
                         hasChanged = false;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return false;
                 }
@@ -83,7 +83,7 @@ namespace TinyCacheLib.FileStorage
                 {
                     File.WriteAllText(path, json, Encoding.UTF8);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return false;
                 }
@@ -94,7 +94,7 @@ namespace TinyCacheLib.FileStorage
 
         private string GetPath(string key)
         {
-            if(string.IsNullOrWhiteSpace((cacheFolder)))
+            if (string.IsNullOrWhiteSpace((cacheFolder)))
             {
                 throw new Exception("Initialize has to be called before using TinyCache with file storage");
             }
@@ -103,7 +103,7 @@ namespace TinyCacheLib.FileStorage
 
             var name = string.Format("TinyCache_{0}.cache", encoded);
 
-            return Path.Combine(cacheFolder,name);
+            return Path.Combine(cacheFolder, name);
         }
     }
 }
