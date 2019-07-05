@@ -11,7 +11,7 @@ namespace TinyCacheLib
         {
             if (cacheObj.ContainsKey(key))
             {
-				return cacheObj[key];
+                return cacheObj[key];
             }
 
             return null;
@@ -21,15 +21,15 @@ namespace TinyCacheLib
         {
             if (cacheObj.ContainsKey(key))
             {
-				cacheObj.Remove(key);
+                cacheObj.Remove(key);
             }
         }
 
-        public bool Store(string key, object value)
+        public bool Store(string key, object value, bool checkChange = true)
         {
             var hasChanged = false;
 
-            if (cacheObj.ContainsKey(key))
+            if (checkChange && cacheObj.ContainsKey(key))
             {
                 hasChanged = cacheObj[key] != value;
                 cacheObj[key] = value;

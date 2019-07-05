@@ -97,9 +97,13 @@ namespace TinyCacheLib
             }
             policy = policy ?? defaultPolicy;
 
-            if (policy.UseCacheFirstFunction == null || !policy.UseCacheFirstFunction())
+            if (ret == null) {
+                ret = func();
+                Store(key, ret, policy);
+            }
+            else if (policy.UseCacheFirstFunction == null || !policy.UseCacheFirstFunction())
             {
-                if (policy.Mode == TinyCacheModeEnum.FetchFirst || ret == null)
+                if (policy.Mode == TinyCacheModeEnum.FetchFirst)
                 {
                     try
                     {
@@ -229,15 +233,15 @@ namespace TinyCacheLib
 
                 if (Storage.Store(key, val))
                 {
+                    policy?.UpdateHandler?.Invoke(key, val);
+                    OnUpdate?.Invoke(val, new CacheUpdatedEvt(key, val));
                     if (SecondaryStorage != null)
                     {
                         Task.Delay(10).ContinueWith((a) =>
                         {
-                            SecondaryStorage.Store(key, val);
+                            SecondaryStorage.Store(key, val, false);
                         });
                     }
-                    policy?.UpdateHandler?.Invoke(key, val);
-                    OnUpdate?.Invoke(val, new CacheUpdatedEvt(key, val));
                 }
             }
         }
