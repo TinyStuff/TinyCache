@@ -98,7 +98,7 @@ namespace TinyCacheLib
             policy = policy ?? defaultPolicy;
 
             if (ret == null) {
-                ret = func();
+                ret = await func();
                 Store(key, ret, policy);
             }
             else if (policy.UseCacheFirstFunction == null || !policy.UseCacheFirstFunction())
