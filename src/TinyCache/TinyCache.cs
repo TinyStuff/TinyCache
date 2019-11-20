@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 namespace TinyCacheLib
 {
 
-    public static class TinyCache
+    public class TinyCache
     {
-        private static TinyCachePolicy defaultPolicy = new TinyCachePolicy();
+        private TinyCachePolicy defaultPolicy = new TinyCachePolicy();
 
-        public static ICacheStorage Storage { get; internal set; } = new MemoryDictionaryCache();
-        public static ICacheStorage SecondaryStorage { get; internal set; }
+        public ICacheStorage Storage { get; internal set; } = new MemoryDictionaryCache();
+        public ICacheStorage SecondaryStorage { get; internal set; }
 
-        public static EventHandler<Exception> OnError;
-        public static EventHandler<CacheUpdatedEvt> OnUpdate;
-        public static EventHandler<CacheUpdatedEvt> OnRemove;
-        public static EventHandler<bool> OnLoadingChange;
+        public EventHandler<Exception> OnError;
+        public EventHandler<CacheUpdatedEvt> OnUpdate;
+        public EventHandler<CacheUpdatedEvt> OnRemove;
+        public EventHandler<bool> OnLoadingChange;
 
         /// <summary>
         /// Timeouts function after specified amout of milliseconds.
@@ -25,7 +25,7 @@ namespace TinyCacheLib
         /// <param name="task">Task to run.</param>
         /// <param name="timeout">Timeout in milliseconds</param>
         /// <typeparam name="TResult">Type of result when running function</typeparam>
-        public static async Task<TResult> TimeoutAfter<TResult>(Func<Task<TResult>> task, double timeout)
+        public async Task<TResult> TimeoutAfter<TResult>(Func<Task<TResult>> task, double timeout)
         {
             OnLoadingChange?.Invoke(task, true);
 
@@ -45,7 +45,7 @@ namespace TinyCacheLib
             }
         }
 
-        public static void Store(string key, object data)
+        public void Store(string key, object data)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException(nameof(key));
@@ -65,7 +65,7 @@ namespace TinyCacheLib
         /// <returns>The from storage.</returns>
         /// <param name="key">Cache key.</param>
         /// <typeparam name="T">Type of the stored data.</typeparam>
-        public static T GetFromStorage<T>(string key)
+        public T GetFromStorage<T>(string key)
         {
             var genericType = typeof(T);
             object ret = Storage.Get(key, genericType);
@@ -87,7 +87,7 @@ namespace TinyCacheLib
         /// <param name="policy">Policy.</param>
         /// <param name="onUpdate">Method to call when data is updated in the background.</param>
         /// <typeparam name="T">Return type of function and cache object.</typeparam>
-        public static async Task<T> RunAsync<T>(string key, Func<Task<T>> func, TinyCachePolicy policy = null, Action<T> onUpdate = null)
+        public async Task<T> RunAsync<T>(string key, Func<Task<T>> func, TinyCachePolicy policy = null, Action<T> onUpdate = null)
         {
             var genericType = typeof(T);
             object ret = Storage.Get(key, genericType);
@@ -130,7 +130,7 @@ namespace TinyCacheLib
         /// Sets the base policy wich will be used if not specified in each request.
         /// </summary>
         /// <param name="tinyCachePolicy">Tiny cache policy.</param>
-        public static void SetBasePolicy(TinyCachePolicy tinyCachePolicy)
+        public void SetBasePolicy(TinyCachePolicy tinyCachePolicy)
         {
             defaultPolicy = tinyCachePolicy;
         }
@@ -139,7 +139,7 @@ namespace TinyCacheLib
         /// Sets the permanent (secondary) cache storage type.
         /// </summary>
         /// <param name="store">Storage instance.</param>
-        public static void SetCacheStore(ICacheStorage store)
+        public void SetCacheStore(ICacheStorage store)
         {
             SecondaryStorage = store;
         }
@@ -148,7 +148,7 @@ namespace TinyCacheLib
         /// Sets the permanent cache storage type.
         /// </summary>
         /// <param name="store">Storage instance.</param>
-        public static void SetCacheStore(ICacheStorage primary, ICacheStorage secondary)
+        public void SetCacheStore(ICacheStorage primary, ICacheStorage secondary)
         {
             Storage = primary;
             SecondaryStorage = secondary;
@@ -159,7 +159,7 @@ namespace TinyCacheLib
         /// </summary>
         /// <returns>The remove.</returns>
         /// <param name="key">Key.</param>
-        public static void Remove(string key)
+        public void Remove(string key)
         {
             Storage.Remove(key);
             OnRemove?.Invoke(key, new CacheUpdatedEvt()
@@ -169,7 +169,7 @@ namespace TinyCacheLib
             });
         }
 
-        private static void StartBackgroundFetch<T>(string key, Func<Task<T>> func, TinyCachePolicy policy, Action<T> onUpdate)
+        private void StartBackgroundFetch<T>(string key, Func<Task<T>> func, TinyCachePolicy policy, Action<T> onUpdate)
         {
             if (policy.UpdateCacheTimeout > 0)
             {
@@ -198,8 +198,8 @@ namespace TinyCacheLib
             }
         }
 
-        private static Object thisLock = new Object();
-        private static void AddLastFetch(string key)
+        private Object thisLock = new Object();
+        private void AddLastFetch(string key)
         {
             lock (thisLock)
             {
@@ -214,7 +214,7 @@ namespace TinyCacheLib
             }
         }
 
-        private static bool ShouldFetch(double v, string key)
+        private bool ShouldFetch(double v, string key)
         {
             if (!lastFetch.ContainsKey(key))
             {
@@ -225,7 +225,7 @@ namespace TinyCacheLib
             return (timeDiff > v);
         }
 
-        private static void Store(string key, object val, TinyCachePolicy policy)
+        private void Store(string key, object val, TinyCachePolicy policy)
         {
             if (val != null)
             {
@@ -246,7 +246,7 @@ namespace TinyCacheLib
             }
         }
 
-        private static Dictionary<string, DateTime> lastFetch = new Dictionary<string, DateTime>();
+        private Dictionary<string, DateTime> lastFetch = new Dictionary<string, DateTime>();
 
 
     }
