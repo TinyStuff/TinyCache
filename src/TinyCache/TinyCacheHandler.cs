@@ -8,6 +8,15 @@ namespace TinyCacheLib
     {
         private static readonly Dictionary<string, TinyCache> caches = new Dictionary<string, TinyCache>();
 
+        public static TinyCache Create(string key)
+        {
+            var cache = new TinyCache();
+
+            Add(key, cache);
+
+            return cache;
+        }
+
         public static void Add(string key, TinyCache cache)
         {
             if (caches.ContainsKey(key))
