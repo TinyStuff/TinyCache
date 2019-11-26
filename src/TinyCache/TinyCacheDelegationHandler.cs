@@ -9,13 +9,20 @@ namespace TinyCacheLib
 {
     public class TinyCacheDelegationHandler : DelegatingHandler
     {
+        private readonly TinyCache cache;
+
+        public TinyCacheDelegationHandler(TinyCache cache)
+        {
+            this.cache = cache;
+        }
+
         public TinyCachePolicy DefaultPolicy { get; set; }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (request.Method == HttpMethod.Get)
             {
-                return await TinyCache.RunAsync<HttpResponseMessage>(request.RequestUri.ToString(), async () =>
+                return await cache.RunAsync<HttpResponseMessage>(request.RequestUri.ToString(), async () =>
                 {
                     var ret = await base.SendAsync(request, cancellationToken);
                     return ret;
