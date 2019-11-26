@@ -59,17 +59,9 @@ namespace TinyCacheLib
         public static IEnumerable<string> AllKeys => caches.Keys;
         public static string DefaultKey { get; private set; }
 
-        public static TinyCache Default => caches.Any() ? caches[DefaultKey] : Create();
+        public static TinyCache Default => caches.Any() ? caches[DefaultKey] : Create("default");
 
         public static int Count => caches.Count;
 
-        private static TinyCache Create()
-        {
-            var cache = new TinyCache();
-
-            caches.Add("default", cache);
-
-            return cache;
-        }
     }
 }
